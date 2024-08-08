@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // function sum() {
+        //     let s = 0;
+        //     for(const x of arguments) {
+        //         s += x;
+        //     }
+        //     return s;
+        // }
+        // console.log(sum(1,2,3,4,5));
+        // function sum(...arg) {
+        //     let s = 0;
+        //     for(let i = 0; i < arg.length; ++i) {
+        //         s += arg[i];
+        //     }
+        //     return s;
+        // }
+        // console.log(sum(1,2,3,4,5,10));
+
+        // const fun = (x, y, z, ...arg) => {
+        //     console.info(x, y, z, arg);
+        // }
+        // fun(1, true, "hi", {"name":"shiki"}, [1,2,3]);
+
+        // const fun = x => console.log(x);
+        // fun("hi");
+
+        // document.querySelector("form").addEventListener("submit", ev => ev.preventDefault());
+
+        // const obj = uid => {return {"id":uid}}
+        // const obj = uid => ({"id":uid})
+        // console.log(obj(123));
+
+        // const t = {
+        //     "name":"shiki",
+        //     "my_arrow_fun":() => console.log(this),
+        //     "my_fun": function(){console.log(this)}
+        // }
+        // // t.my_arrow_fun();
+        // // t.my_fun();
+        // const {name, my_arrow_fun, my_fun} = t;
+        // console.info(name, my_arrow_fun, my_fun);
+
+        // const obj = {
+        //     "id":10001,
+        //     "name":"velvet",
+        //     "age":20,
+        //     "degrade":"master"
+        // };
+        // function get_name({name}) {
+        //     console.log(name);
+        // }
+        // get_name(obj);      // velvet
+
+        // const {id:stu_id, name:stu_name, age, degrade} = obj;
+        // console.log(stu_id);
+        // console.log(stu_name);
+        // console.log(typeof age);
+        // console.log(typeof degrade);
+
+        // const arr = ["red", "green", "yellow"];
+        // arr.forEach(function(ele, num) {
+        //     console.log(ele);
+        //     console.log(num);
+        // }); 
+
+        
+        console.log([1,2,3,4,5,6,7,8,9,10].filter(item => item >= 5));
+
+
+        // console.log([1,2,3,4,5,6,7,8,9,10].filter(item => {return item >= 5;}));
+    </script>
+</body>
+</html>

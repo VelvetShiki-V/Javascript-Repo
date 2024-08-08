@@ -1,0 +1,83 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 4391746 */
+  src: url('iconfont.woff2?t=1703839501020') format('woff2'),
+       url('iconfont.woff?t=1703839501020') format('woff'),
+       url('iconfont.ttf?t=1703839501020') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-truck:before {
+  content: "\e8fd";
+}
+
+.icon-box:before {
+  content: "\e6cb";
+}
+
+.icon-question:before {
+  content: "\e61a";
+}
+
+.icon-qrcode:before {
+  content: "\e609";
+}
+
+.icon-weibo:before {
+  content: "\e882";
+}
+
+.icon-wechat-fill:before {
+  content: "\e883";
+}
+
+.icon-thumbsup:before {
+  content: "\e797";
+}
+
+.icon-view:before {
+  content: "\e608";
+}
+
+.icon-aixin:before {
+  content: "\e68d";
+}
+
+.icon-chat:before {
+  content: "\e69d";
+}
+
+.icon-icprevious:before {
+  content: "\e632";
+}
+
+.icon-icnext:before {
+  content: "\e633";
+}
+
+.icon-prev:before {
+  content: "\e659";
+}
+
+.icon-shouji:before {
+  content: "\e600";
+}
+
+.icon-gouwuche:before {
+  content: "\e73d";
+}
+
+.icon-sousuo:before {
+  content: "\e752";
+}
+
+.icon-next:before {
+  content: "\e6a2";
+}
+

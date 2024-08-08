@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <style>
+        a {
+            position: absolute;
+            display: block;
+            font-size: 25px;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <!-- 链接中转 -->
+    <a href="D:\\Code\\html\\2024.1\\sample9_登录.html">用户注册成功，点击或将在6秒后自动跳转到登录页面</span>
+    
+    <script>
+        let i = 6;
+        const n = 0;
+        const a = document.querySelector("a");
+        n = setInterval(timer, 1000);
+        function timer() {
+            if(i == 0) {
+                clearInterval(n);
+                a.click();
+            }
+            a.innerHTML = `用户注册成功，点击或将在${--i}秒后自动跳转到登录页面`;
+        }
+    </script>
+
+
+    <!-- <ul>
+        <li>111111111111</li>
+        <li>111111111111</li>
+        <li>111111111111</li>
+        <p>123123</p>
+    </ul>
+    <a href="http://www.baidu.com">百度一下</a>
+    <form action="http://www.baidu.com"></form> -->
+
+    <!-- <span></span> -->
+    <!-- <a href="#/我的">我的</a>
+    <a href="#/关注">关注</a>
+    <a href="#/列表">列表</a>
+
+    <p>哈希值：</p> -->
+
+
+    <!-- <script>  
+        // ****************************父元素冒泡机制****************************
+        console.log(arr);
+        ul.addEventListener("click", function(e) {
+            if(e.target.tagName === "LI")
+                e.target.style.color = "red";
+        })
+        const form = document.querySelector("form");
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+        })
+        const link = document.querySelector("a");
+        link.addEventListener("click", function(e) {
+            e.preventDefault();
+        })
+        const arr = ".天,.一,.二,.三,.四,.五,.六".replace(/\./g,"星期").split(",");
+        const ul = document.querySelector("ul");
+        const date = new Date();
+        const p = document.querySelector("ul p");
+        p.innerHTML = "当前时间: " + date;
+    </script> -->
+
+    <!-- <script>
+        // ****************************优惠计时器****************************
+        const date = new Date("2024-2-1");
+        const span = document.querySelector("span");
+        const flag = true;
+        function getTimer() {
+            // 获取当前和未来时间戳
+            const now = Date.now();
+            const future = +date.getTime();
+            // 获取秒数
+            const diff = (future - now) / 1000;
+            if(diff < 0) {
+                // 时间跑完差错处理
+                flag = false;
+                clearInterval(n);
+                return;
+            }
+            // 根据差值秒数计算天时分秒
+            let day = parseInt(diff / 60 / 60 / 24);
+            day = day < 10 ? "0" + day : day;
+            let hour = parseInt(diff / 60 / 60 % 60);
+            hour = hour < 10 ? "0" + hour : hour;
+            let min = parseInt(diff / 60 % 60);
+            min = min < 10 ? "0" + min : min;
+            let sec = parseInt(diff % 60);
+            span.innerHTML = `优惠结束还还剩：${day}天 ${hour}时 ${min}分 ${sec}秒`;
+        }
+
+        getTimer();
+        const n = setInterval(getTimer, 1000);
+    </script> -->
+
+    <!-- <script>
+        // ****************************链接跳转****************************
+        const span = document.querySelector("span");
+        let i = 5;
+        const n =  setInterval(function() {
+            span.innerHTML = `经过${i--}秒后跳转到b站`;
+            if(i == 0) {
+                clearInterval(n);
+                location.href = "https://www.bilibili.com/";
+            }
+        }, 1000)
+    </script> -->
+    <!-- <script>
+        const my = location.hash;
+        const p = document.querySelector("p");
+        p.innerHTML += my;
+    </script> -->
+</body>
+</html>

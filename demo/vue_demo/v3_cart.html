@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cart</title>
+    <link rel="stylesheet" href="./src/css/base.css">
+    <link rel="stylesheet" href="./src/css/index.css">
+    <link rel="stylesheet" href="./src/css/common.css">
+    <link rel="stylesheet" href=".src/iconfont/part1/iconfont.css">
+    <style>
+        /* 轨迹 */
+        .trace {
+            background-color: rgb(245, 245, 245);
+            height: 70px;
+
+            .wrapper {
+                display: flex;
+                height: 70px;
+                line-height: 70px;
+                font-size: 15px;
+
+                a {
+                    margin-right: 10px;
+                }
+
+                a:hover {
+                    color: rgb(130, 184, 158);
+                }
+            }
+        }
+
+        .cart {
+            background-color: rgb(245, 245, 245);
+
+            .wrapper {
+                padding: 20px 50px;
+                background-color: #fff;
+
+                table {
+                    tbody {
+                        tr {
+                            td {
+                                position: relative;
+
+                                .sum {
+                                    color: red;
+                                }
+
+                                .delete {
+                                    color: rgb(39, 187, 154);
+                                }
+
+                                .checkbox {
+                                    width: 20px;
+                                    height: 20px;
+                                }
+
+                                img {
+                                    display: inline-block;
+                                    width: 100px;
+                                    height: 100px;
+                                    vertical-align: bottom;
+                                }
+
+                                .desc {
+                                    position: absolute;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                }
+                            }
+                        }
+
+                        button {
+                            display: inline-block;
+                            width: 30px;
+                            height: 30px;
+                        }
+                    }
+
+                    tr {
+                        display: block;
+                        margin: 10px 0;
+                        padding: 30px 0;
+                        border-top: 1px solid grey;
+
+                        th,
+                        td {
+                            width: 200px;
+                            text-align: center;
+                        }
+
+                        th:nth-child(2),
+                        td:nth-child(2) {
+                            width: 600px;
+                        }
+                    }
+                }
+
+                .checkout {
+                    margin-top: 30px;
+                    background-color: rgb(245, 245, 245);
+
+                    .wrapper {
+                        padding: 30px 40px;
+                        background-color: #fff;
+                        display: flex;
+                        vertical-align: bottom;
+
+                        span {
+                            line-height: 50px;
+                            margin-right: 50px;
+                        }
+
+                        span:nth-child(5) {
+                            margin-right: 100px;
+                        }
+
+                        .total {
+                            span {
+                                font-size: 21px;
+                                font-weight: bold;
+                                color: red;
+                            }
+
+                            button {
+                                width: 120px;
+                                height: 50px;
+                                background-color: rgb(39, 186, 155);
+                                color: #fff;
+                                outline: none;
+                                border: none;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部导航区域 -->
+    <div class="shortcut">
+        <div class="wrapper">
+            <ul>
+                <li class="login"><a href="#">请先登录</a></li>
+                <li class="register"><a href="#">免费注册</a></li>
+                <li><a href="#">我的订单</a></li>
+                <li><a href="#">会员中心</a></li>
+                <li><a href="#">帮助中心</a></li>
+                <li><a href="#">在线客服</a></li>
+                <li class="iconfont icon-shouji"><a href="#">手机版</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- 导航菜单区域 -->
+    <div class="navi">
+        <div class="wrapper">
+            <a href="#">
+                <div class="logo"></div>
+            </a>
+            <div class="right">
+                <ul>
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">生鲜</a></li>
+                    <li><a href="#">美食</a></li>
+                    <li><a href="#">餐具</a></li>
+                    <li><a href="#">电器</a></li>
+                    <li><a href="#">居家</a></li>
+                    <li><a href="#">洗护</a></li>
+                    <li><a href="#">孕婴</a></li>
+                    <li><a href="#">服装</a></li>
+                </ul>
+                <div class="search">
+                    <a href="#"><span class="iconfont icon-sousuo"></span></a>
+                    <input type="text" placeholder="搜一搜">
+                    <a href="#"><span class="iconfont icon-gouwuche"></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 浏览轨迹 -->
+    <div class="trace">
+        <div class="wrapper">
+            <a href="#">首页 ></a>
+            <a href="#">运动 ></a>
+            <a href="#">四季骑行头盔</a>
+        </div>
+    </div>
+    <!-- 购物车 -->
+    <div class="cart">
+        <div class="wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" v-model="isAll">全选</th>
+                        <th>商品信息</th>
+                        <th>单价</th>
+                        <th>数量</th>
+                        <th>小计</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in list" :key="item.id">
+                        <td><input type="checkbox" class="checkbox" v-model="item.isChecked"></td>
+                        <td><img :src="item.img"><span class="desc">{{ item.desc }}</span></td>
+                        <td><span>￥{{ item.price }}</span></td>
+                        <td>
+                            <button :disabled="item.count <= 1" @click="item.count--">-</button>
+                            <span class="count">{{ item.count }}</span>
+                            <button @click="item.count++">+</button>
+                        </td>
+                        <td><span class="sum">￥{{ item.price * item.count }}</span></td>
+                        <td><span class="delete" @click="del(item.id)">删除</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="checkout">
+                <div class="wrapper">
+                    <input type="checkbox" v-model="isAll">
+                    <span>全选</span>
+                    <span><a href="#">删除商品</a></span>
+                    <span><a href="#">移入收藏夹</a></span>
+                    <span><a href="#">清空失效商品</a></span>
+                    <div class="total">
+                        共{{ all }}件商品，已选择{{ selected }}件，商品合计：
+                        <span>￥{{ total }}</span>
+                        <button>下单结算</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- contact联系 -->
+    <div class="contact wrapper">
+        <div class="container">
+            <dl>
+                <dt>客户服务</dt>
+                <dd><a href="#"><i class="iconfont icon-chat"></i>在线客服</a></dd>
+                <dd><a href="#"><i class="iconfont icon-question"></i>问题反馈</a></dd>
+            </dl>
+            <dl>
+                <dt>关注我们</dt>
+                <dd><a href="#"><i class="iconfont icon-wechat-fill"></i>公众号</a></dd>
+                <dd><a href="#"><i class="iconfont icon-weibo"></i>微博</a></dd>
+            </dl>
+            <dl>
+                <dt>下载APP</dt>
+                <!-- <dd><img src="./images/qrcode.png" alt=""></dd> -->
+                <dd class="download">
+                    <span>扫描二维码</span>
+                    <span>立即下载APP</span>
+                    <a href="#">点击下载</a>
+                </dd>
+            </dl>
+            <dl>
+                <dt>服务热线</dt>
+                <dd class="hotline">
+                    400-0000-000
+                    <small>周一至周日 8:00-18:00</small>
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <!-- extra额外信息 -->
+    <div class="extra">
+        <div class="wrapper">
+            <div class="slogan">
+                <a href="#">
+                    <i class="iconfont icon-box"></i>
+                    <span>价格亲民</span>
+                </a>
+                <a href="#">
+                    <i class="iconfont icon-thumbsup"></i>
+                    <span>物流快捷</span>
+                </a>
+                <a href="#">
+                    <i class="iconfont icon-truck"></i>
+                    <span>品质新鲜</span>
+                </a>
+            </div>
+            <div class="copyright">
+                <p>
+                    <a href="#">关于我们</a>
+                    <a href="#">帮助中心</a>
+                    <a href="#">售后服务</a>
+                    <a href="#">配送与验收</a>
+                    <a href="#">商务合作</a>
+                    <a href="#">搜索推荐</a>
+                    <a href="#">友情链接</a>
+                </p>
+                <p>CopyRight@小兔鲜</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="./modules/vue.js"></script>
+    <script>
+        const default_list = [
+            { id: 1, img: "./pic/g1.jpg", desc: "白色衬衫", price: 126, count: 1, isChecked: false },
+            { id: 2, img: "./pic/g2.png", desc: "炫彩头盔", price: 369, count: 2, isChecked: false },
+            { id: 3, img: "./pic/g3.jpg", desc: "儿童舒适泡泡鞋", price: 200, count: 3, isChecked: false },
+            { id: 4, img: "./pic/g4.jpg", desc: "蓝色短靴", price: 99, count: 1, isChecked: false },
+            { id: 5, img: "./pic/g5.jpg", desc: "初音联动吉他", price: 499, count: 2, isChecked: false },
+            { id: 6, img: "./pic/g6.jpg", desc: "高性能跑步机", price: 3999, count: 1, isChecked: false },
+            { id: 7, img: "./pic/g7.png", desc: "铝合金耐摔王头盔", price: 250, count: 5, isChecked: false },
+        ];
+        const app = new Vue({
+            el: ".cart",
+            data: {
+                list: JSON.parse(localStorage.getItem("goods-list")) || default_list
+            },
+            computed: {
+                // 全选反选
+                isAll: {
+                    get() {
+                        // 遍历每个对象观察是否都勾选上，通过every计算结果赋值给isAll
+                        return this.list.every(item => item.isChecked);
+                    },
+                    // 要通过计算属性isAll给其他属性赋值，就必须设置set接口
+                    set(value) {
+                        // 不能用every，只要筛选到第一个不满足要求，后续就不遍历
+                        this.list.forEach(item => item.isChecked = value);
+                    }
+                },
+                // 计算商品总数
+                all() {
+                    return this.list.reduce((prev, cur) => prev + cur.count, 0) || 0;
+                },
+                // 已选商品数
+                selected() {
+                    return this.list.reduce((sum, cur) => {
+                        // 在reduce方法中，每个元素都要返回一个值，以确保累加过程可以正确进行。
+                        // 如果漏掉某个分支的返回值，累加器prev就可能不会得到正确的更新，导致最终结果不正确。
+                        // 因此，无论元素是否被选中，都需要返回累加器的新值，以保证累加过程的连续性和正确性。
+                        if (cur.isChecked) return sum + cur.count;
+                        else return sum;
+                    }, 0) || 0;
+                },
+                // 总金额
+                total() {
+                    return this.list.reduce((sum, cur) => {
+                        if (cur.isChecked) return sum + cur.count * cur.price;
+                        return sum;
+                    }, 0) || 0;
+                }
+            },
+            methods: {
+                // 用于删除商品
+                del(id) {
+                    this.list = this.list.filter(item => item.id !== id);
+                }
+            },
+            watch: {
+                // 监视商品列表，发生变化时保存改动，并存储到本地持久化
+                list: {
+                    deep: true,
+                    handler(newValue) {
+                        localStorage.setItem("goods-list", JSON.stringify(newValue));
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

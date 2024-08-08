@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>register</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            em, i {
+                font-style: normal;
+            }
+            a {
+                text-decoration: none;
+                color: #333;
+            }
+        }
+        /* 版心 */
+        .wrapper {
+            margin: 0 auto;
+            width: 1200px;
+        }
+
+        /* 菜单栏 */
+        .navi {
+            height: 130px;
+            .wrapper {
+                display: flex;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                .logo {
+                    height: 110px;
+                    width: 250px;
+                    background-image: url("D:\\Code\\html\\2023.12\\rabbit\\images\\logo.png");
+                    background-repeat: no-repeat;
+                    margin-right: 30px;
+                }
+                h3 {
+                    color: #a59d9df2;
+                    font-size: 40px;
+                    align-self: center;
+                    margin-left: 100px;
+                    flex: 1;
+                }
+                .jump {
+                    align-self: center;
+                    i {
+                        margin-left: 3px;
+                        color: green;
+                    }
+                }
+                .jump:hover {
+                    color: green;
+                }
+            }
+        }
+
+        /* 登录框 */
+        .login {
+            height: 675px;
+            background-image: url(./img/bg.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            .wrapper {
+                height: 675px;
+                position: relative;
+                .widget {
+                    position: absolute;
+                    right: 10%;
+                    top: 10%;
+                    background-color: #ffffffe1;
+                    height: 500px;
+                    width: 400px;
+                    .header {
+                        display: flex;
+                        height: 70px;
+                        border-bottom: 1px solid #b5acacb0;
+                        a {
+                            font-size: 20px;
+                            align-self: center;
+                            padding-right: 50px;
+                            margin-left: 50px;
+                            border-right: 1px solid #b5acacb0;
+                        }
+                        .active {
+                            color: rgb(103,184,156);
+                        }
+                        .account {
+                            margin-left: 70px;
+                        }
+                        .qrcode {
+                            border: none;
+                        }
+                    }
+                    .body_account {
+                        display: none;
+                        .toggle {
+                            text-align: end;
+                            padding-right: 30px;
+                            line-height: 30px;
+                            height: 30px;
+                            a {
+                                color: rgb(103,184,156);
+                            }
+                        }
+                        form {
+                            position: relative;
+                            input {
+                                display: block;
+                                outline: none;
+                                padding-left: 10px;
+                                font-size: 15px;
+                                height: 50px;
+                                width: 300px;
+                                margin: 30px 50px;
+                            }
+                            label {
+                                display: flex;
+                                input {
+                                    width: 15px;
+                                    height: 15px;
+                                    margin: 0px 10px 10px 50px;
+
+                                }
+                                span {
+                                    margin-top: -3px;
+                                    a {
+                                        color: rgb(12, 161, 161);
+                                    }
+                                }
+                            }
+                            p {
+                                display: block;
+                                margin-left: 50px;
+                                margin-bottom: 10px;
+                                color: red;
+                                display: none;
+                            }
+                            button {
+                                transition: all .3s ease;
+                                margin: 10px 0 20px 50px;
+                                width: 300px;
+                                height: 70px;
+                                background-color: rgb(103,184,156);
+                                outline: none;
+                                border: none;
+                                cursor: pointer;
+                                font-size: 15px;
+                            }
+                            button:hover {
+                                background-color: rgb(80, 225, 174);
+                            }
+                            button:active {
+                                background-color: rgb(34, 98, 75);
+                            }
+                        }
+                        .action {
+                            display: flex;
+                            padding: 10px 50px;
+                            a {
+                                color: grey;
+                                font-size: 15px;
+                                margin-left: 10px;
+                            }
+                            .qq {
+                                margin-right: 95px;
+                            }
+                            a:hover {
+                                color: rgb(103,184,156);
+                            }
+                        }
+                    }
+                    .body_qrcode {
+                        display: none;
+                        img {
+                            display: block;
+                            width: 170px;
+                            height: 170px;
+                            margin: 30px 110px;
+                        }
+                        p {
+                            text-align: center;
+                            a {
+                                color: rgb(104,155,142);
+                                font-size: 18px;
+                            }
+                        }
+                    }
+                    .tab_active {
+                        display: block;
+                    }
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navi">
+        <div class="wrapper">
+            <a href="#"><div class="logo"></div></a>
+            <h3>欢迎登录</h3>
+            <a href="D:\\Code\\html\\2023.12\\rabbit\\index.html" class="jump">进入网站首页<i>>></i></a>
+        </div>
+    </div>
+    <div class="login">
+        <div class="wrapper">
+            <div class="widget">
+                <div class="header">
+                    <a href="#" class="account active">账户登录</a>
+                    <a href="#" class="qrcode">扫码登录</a>
+                </div>
+                <div class="body_account tab_active">
+                    <div class="toggle">
+                        <a href="#">使用短信登录</a>
+                    </div>
+                    <form autocomplete="on" method="get">
+                        <input type="text" name="username" placeholder="用户名输入" required>
+                        <input type="password" name="password" placeholder="密码输入" required>
+                        <label>
+                            <input type="checkbox">
+                            <span>
+                                我已同意
+                                <a href="#">《隐私条款》</a>
+                                和
+                                <a href="#">《服务条款》</a>
+                            </span>
+                        </label>
+                        <p>!请先勾选用户协议</p>
+                        <button type="submit">登录</button>
+                    </form>
+                    <div class="action">
+                        <a href="#" class="qq">QQ登录</a>
+                        <a href="#">忘记密码</a>
+                        <a href="D:\\Code\\html\\2024.1\\sample8_注册.html">免费注册</a>
+                    </div>
+                </div>
+                <div class="body_qrcode">
+                    <img src="./img/qrcode.png" alt="二维码">
+                    <p>打开<a href="#">小兔鲜APP</a>扫码登录</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const jump = document.querySelector(".jump");
+        const form = document.querySelector(".login form");
+        const submit = document.querySelector(".login form button");
+        const inputs = document.querySelectorAll(".login form input");
+        const label = document.querySelector("label");
+        const protocol = document.querySelector("label input");
+        const username = document.querySelector(".login form [name=username]");
+        const password = document.querySelector(".login form [name=password]");
+        const widget = document.querySelector(".widget");
+        const header = document.querySelector(".widget .header");
+        const method_account = document.querySelector(".widget .account");
+        const account = document.querySelector(".widget .body_account");
+        const qrcode = document.querySelector(".widget .body_qrcode");
+
+        // 表单行为
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            // 验证信息和勾选协议
+            if(!protocol.checked) {
+                label.nextElementSibling.style.display = "block";
+                return;
+            }
+            // 提交表单
+            axios({
+                url: "http://1.94.180.58/private/login",
+                method: "post",
+                data: {
+                    username: username.value,
+                    password: password.value
+                }
+            }).then((result) => {
+                console.log(result);
+            }).catch(err => {
+                console.log(err.message);
+            });
+        });
+
+
+        // 登录方式选择和窗体
+        header.addEventListener("click", function(e) {
+            // header高亮处理
+            if(e.target.tagName != "A") return;
+            const header_active = document.querySelector(".widget .header .active");
+            if(header_active && e.target.tagName === "A") header_active.classList.remove("active");
+            e.target.classList.add("active");
+            // widget显示处理
+            const widget_active = document.querySelector(".widget .tab_active");
+            widget_active.classList.remove("tab_active");
+            if(e.target === method_account) {
+                account.classList.add("tab_active");
+                // 窗体高度调整
+                widget.style.height = "500px";
+            }
+            else {
+                qrcode.classList.add("tab_active");
+                widget.style.height = "350px";
+            }
+        });
+        // 协议勾选
+        protocol.addEventListener("click", function() {
+            if(this.checked) {
+                label.nextElementSibling.style.display = "none";
+            }
+            else label.nextElementSibling.style.display = "block";
+        })
+    </script>
+</body>
+</html>

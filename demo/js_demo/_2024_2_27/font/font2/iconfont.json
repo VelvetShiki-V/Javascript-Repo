@@ -1,0 +1,23 @@
+{
+  "id": "4405932",
+  "name": "bilibili",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "17605481",
+      "name": "点赞",
+      "font_class": "dianzan",
+      "unicode": "e816",
+      "unicode_decimal": 59414
+    },
+    {
+      "icon_id": "20741380",
+      "name": "踩",
+      "font_class": "cai",
+      "unicode": "f377",
+      "unicode_decimal": 62327
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+    "cart": [
+        {
+            "id": 1,
+            "img": "",
+            "desc": "白色衬衫",
+            "price": 126,
+            "count": 1,
+            "isChecked": false
+        },
+        {
+            "id": 2,
+            "img": "",
+            "desc": "炫彩头盔",
+            "price": 369,
+            "count": 2,
+            "isChecked": false
+        },
+        {
+            "id": 3,
+            "img": "",
+            "desc": "儿童舒适泡泡鞋",
+            "price": 200,
+            "count": 3,
+            "isChecked": false
+        },
+        {
+            "id": 4,
+            "img": "",
+            "desc": "蓝色短靴",
+            "price": 99,
+            "count": 1,
+            "isChecked": false
+        },
+        {
+            "id": 5,
+            "img": "",
+            "desc": "初音联动吉他",
+            "price": 499,
+            "count": 2,
+            "isChecked": false
+        },
+        {
+            "id": 6,
+            "img": "",
+            "desc": "高性能跑步机",
+            "price": 3999,
+            "count": 1,
+            "isChecked": false
+        },
+        {
+            "id": 7,
+            "img": "",
+            "desc": "铝合金耐摔王头盔",
+            "price": 250,
+            "count": 5,
+            "isChecked": false
+        }
+    ]
+}

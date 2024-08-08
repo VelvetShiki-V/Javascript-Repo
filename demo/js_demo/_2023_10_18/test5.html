@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News List</title>
+    <style>
+        /* 预先取消页面边距和内减模式 */
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        li{
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+        }
+        a:hover{
+            color:#ff8400;
+        }
+    
+        /* 整个新闻块 */
+        .news{
+            width: 360px;
+            height: 250px;
+            margin: 100px auto;
+            /* background-color: pink; */
+        }
+
+        /* 新闻标题区域 */
+        .news .hd {
+            height: 34px;
+            background-color: #eee;
+            border: 1px solid #dbdee1;
+            border-left: 0;
+        }
+
+        /* 每块标题样式 */
+        .news .hd a {
+            margin-top: -1px;
+            display: block;
+            background-color: #fff;
+            border-top: 3px solid #ff8400;
+            border-left: 0;
+            border-right: 1px solid #dbdee1;
+            width: 48px;
+            
+            /* 标题链接字体样式 */
+            font-size: 14px;
+            line-height: 32px;
+            text-align: center;
+            color: #333;
+        }
+
+        /* 内容区域 */
+        .news bd{
+            padding: 10px;
+        }
+
+        .news .bd ul li{
+            background-image: url("./rsc/dot.jpg");
+            background-repeat: no-repeat;
+            background-position: left center;
+            padding-left: 35px;
+            padding-top: 11px;
+        }
+
+        /* 内容区域链接样式 */
+        .news .bd ul li a{
+            background-image: url("./rsc/logo.jpg");
+            background-repeat: no-repeat;
+            background-position: left center;
+            padding: 58px;
+
+            /* 文字属性 */
+            color: #666;
+            font-size: 12px;
+            line-height: 24px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 新闻块 -->
+    <div class="news">
+        <!-- 标题 -->
+        <div class="hd">
+            <a href="#">新闻</a>
+        </div>
+        <!-- 内容 -->
+        <div class="bd">
+            <ul>
+                <li><a href="#">new1new1new1new1new1new1new1new1</a></li>
+                <li><a href="#">new2new2new2new2new2new2new2new2</a></li>
+                <li><a href="#">new3new3new3new3new3new3new3new3</a></li>
+                <li><a href="#">new4new4new4new4new4new4new4new4</a></li>
+                <li><a href="#">new5new5new5new5new5new5new5new5</a></li>
+                <li><a href="#">new6new6new6new6new6new6new6new6</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

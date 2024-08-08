@@ -1,0 +1,23 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+em, i {
+    font-style: normal;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+body {
+    font: 16px/1.5 "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", sans-serif;
+    color: #333;
+}

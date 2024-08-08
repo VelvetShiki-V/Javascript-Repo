@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>comment</title>
+    <link rel="shortcut icon" href="./img/bilibili.png" type="image/x-icon">
+    <link rel="stylesheet" href="./font/font2/iconfont.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            li {
+                list-style: none;
+            }
+            a {
+                color: #fff;
+                text-decoration: none;
+            }
+        }
+        .wrapper {
+            /* background-color: pink; */
+            margin: 0 auto;
+            padding: 50px 50px;
+            width: 1200px;
+            height: 500px;
+            .main {
+                width: 1100px;
+                height: 400px;
+                .reply_box {
+                    /* background-color: skyblue; */
+                    position: relative;
+                    padding: 30px 50px;
+                    display: flex;
+                    .avatar {
+                        img {
+                            border-radius: 50%;
+                        }
+                    }
+                    textarea {
+                        transition: all .3s ease;
+                        padding: 10px 20px;
+                        width: 600px;
+                        height: 43px;
+                        margin: 0 10px;
+                        outline: none;
+                        background-color: rgb(241,242,243);
+                        border: none;
+                        border-radius: 5px;
+                        resize: none;
+                    }
+                    textarea:hover {
+                        background-color: #fff;
+                        border: 1px solid #000;
+                    }
+                    .send {
+                        transition: all .3s ease;
+                        height: 43px;
+                        width: 60px;
+                        background-color: rgb(175,213,242);
+                        align-self: center;
+                        line-height: 43px;
+                        border-radius: 5px;
+                        a {
+                            transition: all .3s ease;
+                            display: block;
+                            height: 43px;
+                            width: 60px;
+                            text-align: center;
+                            line-height: 43px;
+                        }
+                    }
+                    .send:hover {
+                        background-color: rgb(96,172,231);
+                    }
+                    .count {
+                        display: none;
+                        position: absolute;
+                        bottom: 0;
+                        right: 400px;
+                        color: #999;
+                    }
+                }
+                .comment {
+                    ul {
+                        margin-top: 10px;
+                        padding: 0 50px;
+                        li {
+                            padding-bottom: 20px;
+                            border-bottom: 1px solid #999;
+                            .container {
+                                .userinfo {
+                                    margin-top: 15px;
+                                    display: flex;
+                                    align-items: center;
+                                    .avatar {
+                                        img {
+                                            border-radius: 50%;
+                                        }
+                                    }
+                                    .name {
+                                        margin-left: 10px;
+                                    }
+                                    .level {
+                                        margin-left: 10px;
+                                        img {
+                                            width: 40px;
+                                            height: 20px;
+                                            vertical-align: bottom;
+                                        }
+                                    }
+                                }
+                                .reply {
+                                    display: block;
+                                    margin: 10px 50px;
+                                }
+                                .statusbar {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    width: 200px;
+                                    margin: 0 50px;
+                                    font-size: 14px;
+                                    color: #999;
+                                    a {
+                                        font-size: 14px;
+                                        color: #999;
+                                    }
+                                    a:hover {
+                                        color: rgb(96,172,231);
+                                    }
+                                    .iconActive {
+                                        color: rgb(96, 172, 231);
+                                        background-color: rgba(96, 172, 231, 0.2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="main">
+            <!-- 回复框 -->
+            <div class="reply_box">
+                <!-- 头像 -->
+                <div class="avatar"><img src="../2024.1/xmly/img/user.png" alt=""></div>
+                <!-- 输入框 -->
+                <textarea type="text" placeholder="wifi连接中...检测到粉丝输出评论电波..." maxlength="200"></textarea>
+                <!-- 发送按钮 -->
+                <div class="send" id="sd">
+                    <a href="#" id="sd">发布</a>
+                </div>
+                <span class="count">0/200字</span>
+            </div>
+            <div class="comment">
+                <ul></ul>
+            </div>
+        </div>
+    </div>
+    <script src="./js/global.js"></script>
+</body>
+</html>

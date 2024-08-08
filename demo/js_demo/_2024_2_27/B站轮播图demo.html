@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./font/iconfont/iconfont.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            li {
+                list-style: none;
+            }
+            a {
+                text-decoration: none;
+            }
+        }
+        .wrapper {
+            margin: 0 auto;
+            padding: 50px 50px;
+            width: 1200px;
+            height: 800px;
+            .box {
+                width: 600px;
+                height: 500px;
+                img {
+                    width: 600px;
+                    height: 300px;
+                }
+                img:hover {
+                    cursor: pointer;
+                }
+                h4 {
+                    display: inline-block;
+                    width: 480px;
+                    margin: 5px 10px;
+                    font-size: 30px;
+                }
+                span {
+                    display: inline-block;
+                    line-height: 40px;
+                    text-align: center;
+                    margin-top: -10px;
+                    vertical-align: middle;
+                    background-color: pink;
+                    height: 40px;
+                    width: 40px;
+                    font-size: 20px;
+                    border-radius: 10%;
+                }
+                span:hover {
+                    cursor: pointer;
+                    transform: scale(1.1);
+                }
+                p {
+                    margin: 5px 10px;
+                    font-size: 20px;
+                    line-height: 20px;
+                }
+                ul {
+                    display: flex;
+                    width: 400px;
+                    height: 30px;
+                    align-items: center;
+                    text-align: center;
+                    li {
+                        margin-left: 10px;
+                        width: 10px;
+                        height: 10px;
+                        line-height: 10px;
+                        border-radius: 50%;
+                        background-color: #000;
+                    }
+                    .active {
+                        width: 15px;
+                        height: 15px;
+                        background-color: #999;
+                    }
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="box">
+            <img src="https://i2.hdslb.com/bfs/banner/74a6043efc8136115bc13cf5438bbe70a4b2bebf.jpg@976w_550h_1c_!web-home-carousel-cover.webp" alt="">
+            <h4>人工智能</h4>
+            <span class="iconfont icon-left"></span>
+            <span class="iconfont icon-right"></span>
+            <p>神经网络入门课</p>
+            <ul>
+                <li class="active"></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        // 基础数据
+        let cards = [
+                {
+                    "img":"https://i2.hdslb.com/bfs/banner/74a6043efc8136115bc13cf5438bbe70a4b2bebf.jpg@976w_550h_1c_!web-home-carousel-cover.webp"
+                    , "title":"人工智能"
+                    , "sub_title":"必学课程"
+                    , "desc":"神经网络入门课"
+                }, 
+                {
+                    "img":"https://i2.hdslb.com/bfs/banner/41f279e7741127a75be264186a4c027927bbaf21.jpg@976w_550h_1c_!web-home-carousel-cover.webp"
+                    , "title":"女同迷惑行为"
+                    , "sub_title":"选学课程"
+                    , "desc":"嗨嗨嗨"
+                },
+                {
+                    "img":"https://i2.hdslb.com/bfs/banner/2b988ae55c68f5ed252b00a15c2864db89d301cd.jpg@976w_550h_1c_!web-home-carousel-cover.webp"
+                    , "title":"高中开发游戏日志"
+                    , "sub_title":"必学课程"
+                    , "desc":"游戏开发unity"
+                },
+                {
+                    "img":"https://i2.hdslb.com/bfs/banner/2144406a328fabe46de85c1c2833fad423383348.png@976w_550h_1c_!web-home-carousel-cover.webp"
+                    , "title":"冥王星有多可怕"
+                    , "sub_title":"必学课程"
+                    , "desc":"行星物理学"
+                },
+                {
+                    "img":"https://i2.hdslb.com/bfs/banner/ce176757106fdfa458b0398e975c0986171e9a14.png@976w_550h_1c_!web-home-carousel-cover.webp"
+                    , "title":"嗨嗨嗨"
+                    , "sub_title":"必学课程"
+                    , "desc":"行星物理学"
+                }
+            ];
+
+            // 随机播图
+            // const random = parseInt(Math.random() * cards.length);
+            // console.log(random);
+            // // 改图片
+            // const image = document.querySelector(".wrapper .box img");
+            // image.src = cards[random].img;
+            // // 改标题
+            // const h4 = document.querySelector(".wrapper .box h4");
+            // h4.innerHTML = cards[random].title;
+            // // 改描述
+            // const p = document.querySelector(".wrapper .box p");
+            // p.innerHTML = cards[random].desc;
+            // // 改点
+            // const dot = document.querySelector(`.wrapper .box ul li:nth-child(${random + 1})`);
+            // dot.classList.add("active");
+
+
+            // 轮播图
+            let i = 0;
+            const image = document.querySelector(".wrapper .box img");
+            const h4 = document.querySelector(".wrapper .box h4");
+            const p = document.querySelector(".wrapper .box p");
+            const left = document.querySelector(".wrapper .box .icon-left");
+            const right = document.querySelector(".wrapper .box .icon-right");
+
+            function change_content(val) {
+                i += val;
+                if(i < 0) i = cards.length - 1;
+                i %= cards.length;
+                console.log(i);
+                // 改图片
+                image.src = cards[i].img;
+                // 改标题
+                h4.innerHTML = cards[i].title;
+                // 改描述
+                p.innerHTML = cards[i].desc;
+                // 改点
+                document.querySelector(".wrapper .box ul .active").classList.remove("active");
+                const dot = document.querySelector(`.wrapper .box ul li:nth-child(${i + 1})`);
+                dot.classList.add("active");
+            }
+
+            // 定时器轮播
+            let n = setInterval(function(){change_content(1)}, 3000);
+
+            // 鼠标事件监听
+            left.addEventListener("click", function(){change_content(-1)});
+            right.addEventListener("click", function(){change_content(1)});
+            image.addEventListener("mouseenter", function(){
+                clearInterval(n)
+            })
+            image.addEventListener("mouseleave", function() {
+                n = setInterval(function(){change_content(1)}, 3000);
+            })
+    </script>
+</body>
+</html>

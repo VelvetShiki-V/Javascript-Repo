@@ -1,0 +1,572 @@
+/* 首页样式 */
+
+/* 版心（每个区域的主要放置区域） */
+.wrapper {
+    /* 水平居中，宽1200的内容块 */
+    margin: 0 auto;
+    width: 1200px;
+}
+
+/* 网页背景 */
+body {
+    background-color: #f3f5f7;
+}
+
+/******************************** 网页顶部区域 ********************************/
+.header {
+    /* 高100，背景#fff */
+    height: 100px;
+    background-color: #fff;
+}
+
+/* 顶部版心自定义布局 */
+.header .wrapper {
+    /* 内顶间距29，浮动 */
+    background-color: #fff;
+    padding-top: 15px;
+    display: flex;
+    width: 1500px;
+}
+
+/********* Logo区域 *********/
+/* 顶部logo样式，内嵌h1标题和主页超链接，提高引擎搜索率 */
+/* logo区域优先级：div > h1 > a */
+.logo a{
+    /* 宽195高41，块显示模式，字体大小为0（隐藏超链接文字） */
+    display: block;
+    width: 340px;
+    height: 85px;
+    background-image: url(../images/logo.png);
+    font-size: 0;
+}
+/********* Logo区域 *********/
+
+/********* 导航区域 *********/
+/* 导航区域优先级：ul > li > a，与logo划分开区域 */
+/* 内容一般设置右侧margin，左右padding */
+.navigate {
+    margin-top: 30px;
+    margin-left: 30px;
+}
+
+.navigate ul {
+    display: flex;
+}
+
+.navigate ul li {
+    margin-right: 20px;
+}
+
+.navigate ul li a {
+    text-align: center;
+    display: block;
+    width: 80px;
+    height: 25px;
+    font-size: 20px;
+}
+
+.navigate li a:hover,
+.navigate li a:active {
+    border-bottom: 2px solid #00a4ff;
+}
+/********* 导航区域 *********/
+
+/********* 搜索区域 *********/
+.search {
+    /* 调整搜索栏区域和布局 */
+    margin-top: 25px;
+    display: flex;
+    border-radius: 10px;
+    width: 550px;
+    height: 40px;
+    margin-left: 30px;
+    background-color: rgb(244,245,246);
+}
+
+.search input {
+    /* 搜索输入框布局 */
+    padding-left: 10px;
+    flex: 1;
+    border: 0;
+    background-color: transparent;
+    outline: none;
+}
+
+.search input::placeholder {
+    /* 默认输入字符处理 */
+    font-size: 15px;
+    color: black
+}
+
+.search a {
+    /* 搜索图标 */
+    align-self: center;
+    width: 30px;
+    height: 30px;
+    background-image: url(../images/search.png);
+}
+/********* 搜索区域 *********/
+
+/********* 用户区域 *********/
+/* 用户区域标签优先级：div > a > img > span */
+.user {
+    margin-left: 50px;
+    margin-top: 25px;
+}
+
+.user img {
+    vertical-align: middle;
+    border-radius: 10px;
+}
+
+.user span {
+    font-size: 20px;
+    margin-left: 5px;
+}
+/********* 用户区域 *********/
+/******************************* 网页顶部区域 ***************************/
+
+/******************************* banner区域 ****************************/
+.banner {
+    /* 高420，调整主轴对齐，并使用flex布局 */
+    height: 454px;
+    background-image: url(../images/bannerground.png);
+    background-color: #fff;
+}
+
+.banner .wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 1500px;
+}
+
+/********* 左侧导航栏目：ul > li > a *********/
+.banner .left {
+    padding: 3px 20px;
+    width: 191px;
+    height: 454px;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.banner .left a {
+    display: block;         /* 块级宽度是父级100% */
+    height: 50px;
+    color: white;
+    padding-top: 15px;
+    background-image: url(../images/link.png);
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.banner .left a:hover {
+    color: rgb(103,142,196)
+}
+
+/********* 右侧课程栏 *********/
+.banner .right {
+    align-self: center;
+    height: 305px;
+    width: 218px;
+    background-color: #209dd5;
+    border-radius: 10px;
+}
+
+.banner .right h3 {
+    color: #fff;
+    font-size: 13px;
+    height: 50px;
+    padding: 15px 8px;
+}
+
+.banner .right .content {
+    padding: 10px 15px;
+    height: 255px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.banner .right dt {
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.banner .right dd {
+    border-bottom: grey solid 1px;
+    margin-bottom: 15px;
+}
+
+.banner .right dd span {
+    color: #00a4ff;
+    font-size: 14px;
+}
+
+.banner .right dd strong {
+    color: rgb(87,88,93);
+    font-size: 12px;
+}
+
+.banner .right .button {
+    display: block;
+    color: #fff;
+    text-align: center;
+    line-height: 50px;
+    height: 50px;
+    background-color: rgb(94,164,249);
+    border-radius: 10px;
+}
+
+.banner .right a:hover {
+    color: red;
+    outline: none;
+}
+/********* 右侧课程栏 *********/
+/******************************* banner区域 ****************************/
+
+/******************************* 精品推荐区域 ****************************/
+.recommend {
+    display: flex;
+    padding: 20px 15px;
+    height: 60px;
+    margin-top: 15px;
+    background-color: #fff;
+    box-shadow: 0px 1px 2px 0px rgba(211, 211, 211 0.5);
+    border-radius: 10px;
+}
+
+.recommend h3 {
+    color: rbg(80,143,198);
+    font-size: 15px;
+    margin-right: 30px;
+}
+
+.recommend ul {
+    flex: 1;
+    display: flex;
+}
+
+.recommend ul li {
+    color: #000;
+    margin-right: 30px;
+    border-right: grey solid 1px;
+    padding-right: 30px;
+}
+
+.recommend li a {
+    color: #000;
+}
+
+.recommend li a:hover {
+    color: red;
+}
+
+.recommend ul li:last-child {
+    border-right: none;
+}
+
+.recommend .modify {
+    color: #00a4ff;
+    font-size: 14px;
+}
+/******************************* 精品推荐区域 ****************************/
+
+/******************************* 精品课程区域 ****************************/
+.course {
+    margin-top: 30px;
+    height: 580px;
+    /* background-color: green; */
+}
+
+.course .hd {
+    display: flex;
+    padding: 5px 8px;
+    height: 60px;
+    justify-content: space-between;
+}
+
+.course .hd h3 {
+    font-size: 20px;;
+}
+
+.course .hd a {
+    font-size: 15px;
+    color: grey;
+}
+
+.course .bd {
+    margin-top: -15px;
+}
+
+.course .bd a {
+    color: #000;
+}
+
+.course .bd a:hover {
+    color: red;
+}
+
+.course .bd ul {
+    /* background-color: green; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding-top: 10px;
+}
+
+.course .bd ul li{
+    /* background-color: pink; */
+    height: 250px;
+    width: 230px;
+    margin-bottom: 10px;
+}
+
+.course .bd li .pic {
+    height: 160px;
+}
+
+.course .bd li .pic img {
+    width: 230px;
+    height: 160px;
+}
+
+.course .bd li .desc {
+    height: 90px;
+    padding: 15px 10px;
+    background-color: #fff;
+}
+
+.course .bd dt {
+    font-size: 15px;
+    height: 50px;
+}
+
+.course .bd dd {
+    height: 40px;
+}
+
+.course .bd dd span{
+    font-size: 13px;
+    color: orange;
+}
+
+.course .bd dd strong{
+    margin-left: 3px;
+    font-size: 11px;
+    color: grey;
+}
+/******************************* 精品课程区域 ****************************/
+
+/******************************* 前端开发区域 ****************************/
+.frontend {
+    margin-top: 30px;
+    height: 450px;
+    /* background-color: yellow; */
+}
+
+.frontend .hd {
+    display: flex;
+    padding: 5px 8px;
+    height: 60px;
+    justify-content: space-between;
+}
+
+.frontend .hd h3 {
+    font-size: 20px;
+}
+
+.frontend .hd ul {
+    display: flex;
+}
+
+.frontend .hd li {
+    margin-right: 70px;
+}
+
+.frontend .hd li a {
+    color: black;
+    font-size: 17px;
+}
+
+.frontend .hd li a:hover{
+    color: rgb(121,163,243);
+}
+
+.frontend .hd a {
+    font-size: 15px;
+    color: grey;
+}
+
+.frontend .bd {
+    margin-top: -10px;
+    display: flex;
+    height: 400px;
+    /* background-color: green; */
+    background-repeat: no-repeat;
+}
+
+.frontend .bd .left {
+    width: 270px;
+    height: 390px;
+    /* background-color: pink; */
+    background-image: url(../images/guide.png);
+}
+
+.frontend .bd .right {
+    width: 100%;
+    margin-left: 10px;
+    /* background-color: blue; */
+}
+
+.frontend .bd .right .top {
+    height: 100px;
+    background-image: url(../images/frontend_bg.png);
+}
+
+.frontend .bd .right .content {
+    margin-top: 10px;
+    height: 230px;
+}
+
+.frontend .bd .right .content ul {
+    /* background-color: green; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding-top: 10px;
+    margin-left: -15px;
+}
+
+.frontend .bd .right .content li {
+    /* background-color: pink; */
+    height: 250px;
+    width: 230px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+}
+
+.frontend .bd .right .content li a{
+    color: black;
+}
+
+.frontend .bd .right .content li a:hover{
+    color: red;
+}
+
+.frontend .bd .right .content li .pic {
+    height: 160px;
+}
+
+.frontend .bd .right .content li .pic img {
+    width: 230px;
+    height: 160px;
+}
+
+.frontend .bd .right .content li .desc {
+    height: 110px;
+    padding: 15px 10px;
+    background-color: #fff;
+}
+
+.frontend .bd .right .content li dt {
+    font-size: 15px;
+    height: 50px;
+}
+
+.frontend .bd .right .content li dd {
+    padding-top: 10px;
+    height: 60px;
+}
+
+.frontend .bd .right .content li dd span{
+    font-size: 13px;
+    color: orange;
+}
+
+.frontend .bd .right .content li dd strong{
+    margin-left: 3px;
+    font-size: 11px;
+    color: grey;
+}
+
+
+/******************************* 前端开发区域 ****************************/
+
+
+/******************************* 版权区域 ****************************/
+.copyrights {
+    display: flex;
+    margin-top: 60px;
+    height: 300px;
+    background-color: white;
+    padding: 30px 0px;
+}
+
+.copyrights .left {
+    /* background-color: #000; */
+    margin-left: 200px;
+    width: 700px;
+    margin-right: 20px;
+}
+
+.copyrights .logo {
+    width: 700px;
+    height: 100px;
+    background-image: url(../images/logo.png);
+    background-repeat: no-repeat;
+}
+
+.copyrights .desc {
+    margin-top: 15px;
+    font-size: 15px;
+}
+
+.copyrights .left a {
+    display: inline-block;
+}
+
+.copyrights .left .download {
+    text-align: center;
+    color: rgb(105,144,194);
+    margin-top: 30px;
+    width: 120px;
+    height: 50px;
+    line-height: 50px;
+    background-color: #fff;
+    border: rgb(105,144,194) solid 1px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.copyrights .left a:hover .download {
+    background-color: blue;
+    color: white;
+}
+
+.copyrights .right {
+    display: flex;
+    width: 100%;
+    /* background-color: yellow; */
+    padding: 20px 100px;
+}
+
+.copyrights .other {
+    margin-right: 70px;
+}
+
+.copyrights .other a{
+    color: #000;
+}
+
+.copyrights .other a:hover{
+    color: red;
+}
+
+.copyrights .other h4 {
+    margin-bottom: 12px;
+}
+
+.copyrights .other li {
+    margin-bottom: 6px;
+
+}
+
+/******************************* 版权区域 ****************************/

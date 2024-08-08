@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>register</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            a {
+                color: #000;
+                text-decoration: none;
+            }
+        }
+        .wrapper {
+            margin: 50px auto;
+            padding: 50px 100px;
+            height: 700px;
+            width: 1200px;
+            background-color: #fff;
+            padding-top: 30px 50px;
+            .header {
+                display: flex;
+                align-items: center;
+                h3 {
+                    flex: 1;
+                    color: #857c7ca5;
+                    font-size: 30px;
+                }
+            }
+            
+            .register {
+                background-color: #fff;
+                position: relative;
+                .token {
+                    position: absolute;
+                    left: 57%;
+                    top: 195px;
+                    color: rgb(73,186,155);
+                }
+                .token_click {
+                    left: 53%;
+                }
+                p {
+                    display: block;
+                    opacity: 0;
+                    margin-left: 350px;
+                }
+                input {
+                    display: block;
+                    transform: translateX(350px);
+                    width: 300px;
+                    height: 50px;
+                    margin-top: 20px;
+                    border: 1px solid rgba(190, 181, 181, 0.609);
+                    outline: none;
+                    padding-left: 20px;
+                }
+                .correct {
+                    color: greenyellow;
+                }
+                .incorrect {
+                    color: red;
+                }
+                label {
+                    display: flex;
+                    transform: translateX(250px);
+                    width: 250px;
+                    margin: 30px 120px;
+                    input {
+                        transform: none;
+                        margin-top: 3px;
+                        margin-right: 3px;
+                        left: 0;
+                        width: 20px;
+                        height: 15px;
+                        border-radius: 50%;
+                    }
+                    a {
+                        color: rgb(73,186,155);
+                    }
+                }
+                button {
+                    margin: 70px auto;
+                    outline: none;
+                    border: none;
+                    display: block;
+                    width: 300px;
+                    height: 70px;
+                    background-color: rgb(73,186,155);
+                    font-size: 20px;
+                }
+                button:hover {
+                    background-color: rgb(50, 246, 194);
+                    cursor: pointer;
+                }
+                button:active {
+                    background-color: rgb(6, 68, 52);
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h3>新用户注册</h3>
+            <a href="F:\\CODE\\html\\2023.12\\rabbit\\index.html">返回主站</a>
+        </div>
+        <form class="register">
+            <input type="text" name="username" placeholder="用户名输入">
+            <p>1</p>
+            <input type="text" name="phone" placeholder="手机号输入">
+            <p>1</p>
+            <input type="text" name="token" placeholder="验证码输入">
+            <p>1</p>
+            <input type="password" name="password" placeholder="密码输入">
+            <p>1</p>
+            <input type="password" name="repwd" placeholder="重复密码">
+            <p>1</p>
+            <label>
+                <input type="checkbox" name="protocol">
+                <span>已阅读并同意</span>
+                <a href="javascript:;">《用户服务协议》</a>
+            </label>
+            <button type="submit">注册</button>
+            <a href="javascript:;" class="token">立即获取</a>
+        </form>
+    </div>
+    <script>
+        const correct = "√输入合法";
+        const incorrect = "x输入不合法";
+        const form = document.querySelector(".wrapper .register");
+        const message = document.querySelector(".wrapper .register .token");
+        const protocol = document.querySelector(".wrapper .register label [name=protocol]");
+        const name = document.querySelector(".wrapper .register [name=username]");
+        const phone = document.querySelector(".wrapper .register [name=phone]");
+        const token = document.querySelector(".wrapper .register [name=token]");
+        const pwd = document.querySelector(".wrapper .register [name=password]");
+        const repwd = document.querySelector(".wrapper .register [name=repwd]");
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            if(verify_name() && verify_phone() && verify_pwd() && 
+            verify_repwd() && verify_token() && protocol.checked) {
+                alert("用户注册成功!");
+                location.href = "D:\\Code\\html\\2024.1\\sample2_倒计时.html";
+            }
+            else alert("注册失败");
+        })
+        name.addEventListener("input", verify_name);
+        phone.addEventListener("input", verify_phone);
+        token.addEventListener("input", verify_token);
+        pwd.addEventListener("input", verify_pwd);
+        repwd.addEventListener("input", verify_repwd);
+
+        // 验证码获取
+        let timer = 6;
+        let timer_id;
+        let flag = true;
+        message.addEventListener("click", function() {
+            if(flag) {
+                flag = false;
+                this.classList.add("token_click");
+                get_message();
+                timer_id = setInterval(get_message, 1000);
+            }
+        })
+        function get_message() {
+            if(timer == 0) {
+                message.classList.remove("token_click");
+                message.innerHTML = "重新获取";
+                timer = 6;
+                clearInterval(timer_id);
+                flag = true;
+                return;
+            }
+            message.innerHTML = `${timer--}秒后重新获取`;
+        }
+
+        // 用户名验证
+        function verify_name() {
+            // Velvet_Shiki
+            const rule = /^[a-zA-Z0-9_]{6,16}$/;         // 6至16个字符，仅能为字母或数字
+            return verify(rule, name);
+        }
+
+        // 手机号验证
+        function verify_phone() {
+            // *1*   3/4/5/6/7/8/9   9   87196388
+            const rule = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-3 5-9])\d{8}$/;
+            return verify(rule, phone);
+        }
+
+        // 验证码验证
+        function verify_token() {
+            // 33069
+            const rule = /^\d{5}$/;
+            return verify(rule, token);
+        }
+
+        // 密码验证
+        function verify_pwd() {
+            // zcx984288627
+            const rule = /^[a-zA-Z0-9-_]{6,20}$/;
+            verify_repwd();
+            return verify(rule, pwd);
+        }
+
+        // 重复密码输入验证
+        function verify_repwd() {
+            if(pwd.value === repwd.value) {
+                repwd.nextElementSibling.style.opacity = "1";
+                repwd.nextElementSibling.innerHTML = correct;
+                repwd.nextElementSibling.className = "correct";
+                return true;
+            }
+            else {
+                repwd.nextElementSibling.style.opacity = "1";
+                repwd.nextElementSibling.innerHTML = incorrect;
+                repwd.nextElementSibling.className = "incorrect";
+            }
+            return false;
+        }
+
+        // 验证+提示
+        function verify(rule, input) {
+            if(rule.test(input.value)) {
+                input.nextElementSibling.style.opacity = "1";
+                input.nextElementSibling.innerHTML = correct;
+                input.nextElementSibling.className = "correct";
+                return true;
+            }
+            else {
+                input.nextElementSibling.style.opacity = "1";
+                input.nextElementSibling.innerHTML = incorrect;
+                input.nextElementSibling.className = "incorrect";
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

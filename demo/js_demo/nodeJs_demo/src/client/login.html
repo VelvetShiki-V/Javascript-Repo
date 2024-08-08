@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+</head>
+<body>
+    <form>
+        <div class="area">
+            <span>用户名：</span>
+            <input type="text" id="username">
+        </div>
+        <div class="area">
+            <span>密码</span>
+            <input type="password" id="password">
+        </div>
+        <button type="submit">登录</button>
+    </form>
+    <p id="status"></p>
+    <p id="token"></p>
+    <a href="./index.html"></a>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const username = document.querySelector("#username");
+        const password = document.querySelector("#password");
+        const link = document.querySelector("a");
+        const form = document.querySelector("form");
+        const statuss = document.querySelector("#status");
+        const token = document.querySelector("#token");
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            axios({
+                url: "http://1.94.180.58/login",
+                method: "post",
+                data: {
+                    username: username.value,
+                    password: password.value
+                }
+            }).then(result => {
+                console.log(result.data);
+                if(result.data.status === 200) {
+                    statuss.innerHTML = "LOGIN STATUS: " + result.data.status;
+                    token.innerHTML = result.data.token;
+                    link.innerHTML = "登陆成功，点击跳转到主页！";
+                    localStorage.setItem("current_user_token", result.data.token);
+                }
+                else {
+                    alert(result.data.message);
+                    localStorage.clear();
+                    statuss.innerHTML = "";
+                    token.innerHTML = "";
+                    link.innerHTML = "";
+                }
+            }).catch(err => {
+                alert(err.message);
+            })
+        });
+    </script>
+</body>
+</html>

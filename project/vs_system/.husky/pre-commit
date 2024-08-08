@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# 代码提交前对packge.json中的.js .vue ,cjs .jsx等文件进行husky校验
+# npm test
+# pnpm lint
+pnpm lint-staged

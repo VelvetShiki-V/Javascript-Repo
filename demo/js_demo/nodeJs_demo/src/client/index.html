@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button type="button" id="cart">加入购物车</button>
+    <button type="button" id="star">添加到收藏</button>
+    <button type="button" id="pay">付款！</button>
+    <p id="status"></p>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const cart = document.querySelector("#cart");
+        const star = document.querySelector("#star");
+        const pay = document.querySelector("#pay");
+        const statuss = document.querySelector("#status");
+        // 请求基地址
+        axios.defaults.baseURL = "http://1.94.180.58/private";
+
+        // 请求拦截器
+        axios.interceptors.request.use(config => {
+            // 发出请求统一操作
+            const token = localStorage.getItem("current_user_token");
+            token && (config.headers.Authorization = `Bearer ${token}`);
+            return config;
+        }, err => {
+            // 发出请求错误处理函数
+            return Promise.reject(err);
+        });
+
+        // 响应拦截器
+        axios.interceptors.response.use(response => {
+            // 收到响应时触发
+            const result = response.data;
+            return result;
+        });
+
+        // 事件触发(冒泡)
+        document.body.addEventListener("click", (e) => axios({
+            url: `/${e.target.id}`
+            // 使用原始报头请求法
+            // headers: {
+            //     "Authorization": "Bearer " + localStorage.getItem("current_user_token")
+            // }
+            }).then(result => {
+                console.log(result);
+                if(result.status === 401) {
+                    localStorage.clear();
+                    alert(result.message + ", 将自动跳转到登录页面！");
+                    location.href = "./login.html";
+                }
+                else if(result.status === 200) {
+                    statuss.innerHTML = result.message;
+                }
+            }).catch(err => {
+                alert("请求失败", err.response.data.message);
+            })
+        )
+    </script>
+</body>
+</html>

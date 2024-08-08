@@ -1,0 +1,438 @@
+/* 版心 */
+.wrapper {
+    margin: 0 auto;
+    width: 1200px;
+}
+
+/* 横幅区域 */
+.banner {
+    margin-top: 30px;
+    height: 300px;
+    .wrapper {
+        display: flex;
+        height: 300px;
+        position: relative;
+        overflow: hidden;
+        .left {
+            transition: all .3s ease;
+            position: absolute;
+            height: 261px;
+            width: 652px;
+            left: -1;
+            top: 5%;
+            img {
+                z-index: -2;
+                height: 261px;
+                width: 652px;
+            }
+        }
+        .left:hover {
+            transform: scale(1.05);
+        }
+        .center {
+            transition: all .3s ease;
+            position: absolute;
+            height: 300px;
+            width: 750px;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            img {
+                z-index: -1;
+                height: 300px;
+                width: 750px;
+            }
+        }
+        .center:hover {
+            transform: translateX(-50%) scale(1.05);
+        }
+        .right {
+            transition: all .3s ease;
+            position: absolute;
+            height: 261px;
+            width: 652px;
+            right: 0;
+            z-index: -1;
+            top: 5%;
+            img {
+                z-index: -2;
+                height: 261px;
+                width: 652px;
+            }
+        }
+        .right:hover {
+            transform-origin: center center;
+            transform: scale(1.05);
+        }
+        .btn-left {
+            transition: all 1s .1s ease;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 50px;
+            border-radius: 0 45px 45px 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            .icon-left {
+
+                font-size: 45px;
+                color: #fff;
+            }
+        }
+        .btn-right {
+            transition: all 1s .1s ease;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 50px;
+            border-radius: 45px 0 0 45px;
+            background-color: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            .icon-right {
+                font-size: 50px;
+                color: #fff;
+            }
+        }
+    }
+    .wrapper:hover {
+        .btn-left {
+            border-radius: 0 45px 45px 0;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .btn-right {
+            border-radius: 45px 0 0 45px;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    }
+}
+
+/* 分类导航 */
+.category {
+    margin-top: 30px;
+    height: 120px;
+    .wrapper {
+        height: 120px;
+        /* 左侧子导航 */
+        .sub_category {
+            display: flex;
+            width: 250px;
+            align-items: center;
+            a {
+                width: 75px;
+                height: 60px;
+                border-right: 1px solid rgba(0, 0, 0, 0.5);
+                margin: 10px 0 0 40px;
+                .iconfont {
+                    font-size: 25px;
+                    color: #f86422;
+                }
+                span {
+                    display: block;
+                    text-align: center;
+                    width: 50px;
+                    height: 30px;
+                    font-size: 15px;
+                }
+            }
+            a:hover {
+                .iconfont {
+                    color: #ffc2a6;
+                }
+                span {
+                    color: #f86422;
+                }
+            }
+            a:nth-child(2) {
+                border: none;
+            }
+        }
+        /* 右侧推荐区域 */
+        .recommend {
+            display: flex;
+            flex-wrap: wrap;
+            width: 950px;
+            .district {
+                margin: 15px 20px 0 20px;
+                background-color: white;
+                display: flex;
+                width: 180px;
+                height: 30px;
+                h4 {
+                    color: #40404c;
+                    border-right: 2px solid #f86422;
+                    font-size: 14px;
+                    margin: 5px 12px;
+                    padding-right: 10px;
+                }
+                span {
+                    color: #72727B;
+                    font-size: 13px;
+                    margin: 5px 8px 0 5px;
+                    padding-right: 10px;
+                }
+                a:hover {
+                    color: #f86422;
+                }
+            }
+        }
+    }
+}
+
+.preference {
+    height: 300px;
+    .wrapper {
+        height: 300px;
+        position: relative;
+        /* 标头 */
+        .header {
+            width: 900px;
+            height: 50px;
+            margin: 10px 5px 0 0;
+            display: flex;
+            align-items: center;
+            /* 标题 */
+            h2 {
+                flex: 1;
+                height: 30px;
+                color: #40404C;
+                font-size: 20px;
+                padding-left: 20px;
+                margin-left: 20px;
+                border-left: 5px solid #f86422;
+            }
+            /* 换一批 */
+            a {
+                width: 100px;
+                height: 50px;
+                line-height: 50px;
+                text-align: center;
+                span {
+                    font-size: 14px;
+                    i {
+                        display: inline-block;      /* 必须转换为行内块才生效 */
+                        transition: all .3s ease;
+                        font-size: 14px;
+                        margin-right: 10px;
+                    }
+                }
+            }
+            a:hover {
+                color:#f86422;
+                span {
+                    i {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+        }
+        /* 内容部分 */
+        .body {
+            position: absolute;
+            width: 900px;
+            top: 85px;
+            ul {
+                display: flex;
+                /* 产品卡片 */
+                li {
+                    width: 150px;
+                    height: 190px;
+                    overflow: hidden;
+                    margin: 0 30px 5px 5px;
+                    border-radius: 10%;
+                    /* 产品内容 */
+                    .content {
+                        width: 150px;
+                        border-radius: 10%;
+                        /* 图片链接区域 */
+                        .image {
+                            border-radius: 10%;
+                            position: relative;
+                            display: block;
+                            width: 146px;
+                            height: 146px;
+                            margin-bottom: 5px;
+                            overflow: hidden;
+                            /* 图片区域 */
+                            img {
+                                /* vertical-align: auto; */
+                                transition: all .1s ease;
+                                height: 146px;
+                                width: 146px;
+                                border-radius: 10%;
+                            }
+                            /* 动态特效 */
+                            .play {
+                                display: block;
+                                transition: all .3s ease;
+                                position: absolute;
+                                width: 0;
+                                height: 0;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                opacity: 0;
+                            }
+                        }
+                        .image:hover {
+                            overflow: hidden;
+                            img {
+                                border-radius: 10%;
+                                transform: scale(1.05);
+                            }
+                            .play {
+                                position: absolute;
+                                height: 80px;
+                                width: 80px;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                opacity: 1;
+                            }
+                        }
+                        /* 卡片标题 */
+                        strong {
+                            padding-left: 5px;
+                            font-size: 14px;
+                            color: #40404C;
+                        }
+                        /* 卡片描述 */
+                        p {
+                            padding-left: 5px;
+                            font-size: 12px;
+                            color: A3A3AC;
+                        }
+                    }
+                }
+                li:hover {
+                    strong {
+                        color: #f86422;
+                    }
+                }
+            }
+        }
+        /* 右侧登录窗口 */
+        .login {
+            margin: 10px 5px 0 20px;
+            height: 260px;
+            width: 260px;
+            /* 用户卡片 */
+            .usercard {
+                width: 260px;
+                height: 130px;
+                /* 头部头像和登录提示 */
+                .head {
+                    width: 260px;
+                    display: flex;
+                    align-items: center;
+                    padding: 10px 25px;
+                    height: 65px;
+                    background-image: radial-gradient(
+                        200px at center,
+                        #f86422,
+                        #fff
+                    );
+                    span {
+                        border-radius: 50%;
+                        img {
+                            border-radius: 50%;
+                            vertical-align: auto;
+                        }
+                    }
+                    p {
+                        margin-left: 10px;
+                        color: #4a4848;
+                    }
+                }
+                /* 登录按钮主体 */
+                .body {
+                    background-color: #F9F9FA;
+                    width: 260px;
+                    height: 65px;
+                    margin-top: -15px;
+                    align-items: center;
+                    /* 按钮 */
+                    .button {
+                        margin-top: 20px;
+                        text-align: center;
+                        a {
+                            display: block;
+                            border-radius: 30px;
+                            padding: 5px 10px;
+                            margin-left: 80px;
+                            width: 100px;
+                            height: 30px;
+                            background-image: linear-gradient(
+                                to left,
+                                #f5cdcd,
+                                #f86422
+                            );
+                            color: #fff;
+                        }
+                    }
+                    .button:hover a {
+                        background-image: linear-gradient(
+                            to left,
+                            #f5cdcd 10%,
+                            #f86422 90%
+                        );
+                    }
+                }
+            }
+            /* 下载区域 */
+            .download {
+                position: relative;
+                width: 260px;
+                height: 110px;
+                margin-top: 20px;
+                padding: 10px;
+                background-color: #F9F9FA;
+                .iphone {
+                    position: absolute;
+                    border-radius: 20px;
+                    padding: 5px 10px;
+                    left: 10px;
+                    transform: translateY(-20%);
+                    top: 50%;
+                    background-color: rgb(158, 250, 250);
+
+                }
+                .android {
+                    padding: 5px 10px;
+                    border-radius: 20px;
+                    position: absolute;
+                    background-color: green;
+                    color: white;
+                    left: 100px;
+                    top: 50%;
+                    transform: translateY(-20%);
+                }
+                .iphone:hover {
+                    background-image: linear-gradient(
+                        to left,
+                        rgb(158, 250, 250),
+                        white
+                    );
+                }
+                .android:hover {
+                    background-image: linear-gradient(
+                        to left,
+                        green 10%,
+                        white 99%
+                    );
+                }
+                .image {
+                    position: absolute;
+                    right: 5px;
+                    img {
+                        width: 70px;
+                        height: 70px;
+                    }
+                }
+            }
+        }
+    }
+}

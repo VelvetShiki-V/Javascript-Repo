@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue create</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        .vending {
+            width: 300px;
+            /* height: 100px; */
+            /* background-color: pink; */
+            padding: 30px;
+        }
+        .box3 {
+            position: relative;
+            margin: 50px auto;
+            padding: 50px;
+            width: 1200px;
+            height: 700px;
+            background-color: pink;
+
+            .header {
+                background-color: yellow;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                top: 10%;
+                border: 5px dashed grey;
+                padding: 50px;
+                h2 {
+                    font-size: 50px;
+                }
+            }
+            .body {
+                position: absolute;
+                top: 40%;
+                width: 800px;
+                left: 20%;
+                .service {
+                    display: flex;
+                    input {
+                        width: 700px;
+                        height: 60px;
+                        outline: none;
+                        border: none;
+                        padding: 10px;
+                        font-size: 20px;
+                    }
+                    button {
+                        width: 100px;
+                        height: 60px;
+                        border: none;
+                        font-size: 20px;
+                        background-image: linear-gradient(
+                            90deg,
+                            #ff9973 1%,
+                            #ff7251 99%
+                        );
+                    }
+                    button:hover {
+                        cursor: pointer;
+                        background-image: linear-gradient(
+                            90deg,
+                            #c4a296 10%,
+                            #f2c5ba 90%
+                        );
+                    }
+                    button:active {
+                        background-image: linear-gradient(
+                            90deg,
+                            #c53e0d 10%,
+                            #49312b 90%
+                        );
+                    }
+                }
+                ol {
+                    li {
+                        position: relative;
+                        margin-left: 40px;
+                        font-size: 35px;
+                        i {
+                            position: absolute;
+                            font-style: normal;
+                            right: 10px;
+                            top: 10px;
+                            color: grey;
+                            font-size: 20px;
+                        }
+                        i:hover {
+                            cursor: pointer;
+                            color: red;
+                        }
+                    }
+                }
+                .statistic {
+                    position: relative;
+                    .count {
+                        position: absolute;
+                        left: 0;
+                    }
+                    .clear {
+                        position: absolute;
+                        right: 0;
+                        cursor: pointer;
+                    }
+                    .clear:hover {
+                        color: red;
+                    }
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 创建盒子容器box -->
+    <!-- <div class="box1">
+        <h1 v-show="flag">这是box</h1>
+        <h2 v-if="flag">{{title}}</h2>
+        <p>{{desc}}</p>
+        <p>{{count}}</p>
+        <div v-html="link" title="www.baidu.com"></div>
+    </div>
+
+     <div id="box2">
+        <span v-if="type === 'A'">这是类型A</span>
+        <span v-else>这是类型B</span>
+        <hr>
+        <p v-if="score >= 90">优秀</p>
+        <p v-else-if="score >= 70">良好</p>
+        <p v-else-if="score >= 60">中等</p>
+        <p v-else>不及格</p>
+        <button v-on:click="count-=2">-</button>
+        <span>{{ count }}</span>
+        <button @mouseenter="count+=2">+</button>
+        <hr>
+        <button @click="my_fn">点击显示或隐藏以下段落</button>
+        <p v-show="flag">这是一个段落</p>
+        <hr>
+        <div class="vending">
+            <button @click="pay(5)">火腿肠5块</button>
+            <button @click="pay(10)">泡面10块</button>
+            <p>卡余额：{{ balance }}</p>
+            <p v-show="flag">您的余额为0, 无法继续购买!</p>
+            <img :src="pic_list[pic_index]" :title="pic_list[pic_index]" alt="图片无法显示" width="200px" height="300px">
+            <button @click="pic_index = (pic_index + 1) % pic_list.length">next</button>
+            <button @click="pic_index = (pic_index - 1 + pic_list.length) % pic_list.length">prev</button>
+            <ul>
+                <li v-for="(item, index) in price_list">
+                    <span>商品:{{ index }} —— {{ item }}</span>
+                </li>
+            </ul>
+        </div>
+        <hr>
+        <div class="bookshelf">
+            <ol>
+                <li v-for="(item, index) in booklist">
+                    <span>Author: {{ item.name }} —— 《{{ item.bookname }}</span>
+                    <button @click="booklist.splice(index, 1)">删除书籍</button>
+                </li>
+            </ol>
+        </div>
+    </div> -->
+    
+    <div name="box3" class="box3">
+        <div class="header">
+            <h2>任务清单</h2>
+        </div>
+        <div class="body">
+            <div class="service">
+                <input @keyup.enter="get_task" type="text" v-model="task" placeholder="请输入待办事项" required>
+                <button @click="get_task">添加任务</button>
+            </div>
+            <ol>
+                <li v-for="item in task_list" :key="item.task_id">{{ item.task_name }}<i @click="del(item.task_id)">X</i></li>
+            </ol>
+            <div class="statistic">
+                <span class="count">合计: {{ task_list.length }}</span>
+                <span class="clear" @click="task_list=[]" cursur="pointer">清空任务</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="./modules/vue.js"></script>
+    <script>
+        // 1. 创建vue实例
+        // const vpp = new Vue({
+        //     // 2. 通过el属性选盒子，data属性渲染数据
+        //     // el: ".box1",
+        //     el: "#box2",
+        //     // el: "[name=box3]",
+        //     data: {
+        //         // 响应式数据
+        //         // title: "Welcome!",
+        //         // desc: "this is a welcome page",
+        //         count: 10,
+        //         // link: "<a href='http://baidu.com'>click here!</a>",
+        //         // tips: "www.baidu.com",
+        //         flag: false,
+        //         type: "B",         // 需要值相等，类型也要相等
+        //         score: 58,
+        //         balance: 100,
+        //         pic_index: 0,
+        //         pic_list: [
+        //             "./src/pic/1.jpg",
+        //             "./src/pic/2.jpg",
+        //             "./src/pic/3.jpg",
+        //             "./src/pic/4.jpg",
+        //             "./src/pic/5.jpg",
+        //             "./src/pic/6.jpg",
+        //             "./src/pic/7.jpg"
+        //         ],
+        //         price_list: ["$30", "$50", "$88", "$93", "$5"],
+        //         booklist: [
+        //             { bookname: "平凡的世界", name: "路遥" },
+        //             { bookname: "三体", name: "刘慈欣" },
+        //             { bookname: "vue开发", name: "尤雨溪" },
+        //             { bookname: "c++ primer", name: "Prata.S" },
+        //         ]
+        //     },
+        //     methods: {
+        //         // 提供方法函数
+        //         my_fn() {
+        //             console.log("这是一个函数");
+        //             // flag = !flag;        // data中的flag不能直接访问（直接写取的是全局变量）
+        //             this.flag = !this.flag;   // 必须通过vue对象访问，this指向当前实例vpp
+        //         },
+        //         // 支付函数
+        //         pay(val) {
+        //             if(this.balance <= 0) {
+        //                 this.flag = true;
+        //                 return;
+        //             }
+        //             this.balance -= val;
+        //         }
+        //     }
+        // });
+
+        const app2 = new Vue({
+            el: "[name=box3]",
+            data: {
+                task: "",
+                task_list: []
+            },
+            methods: {
+                get_task() {
+                    const id = +new Date();
+                    console.log(id);
+                    this.task_list.push({
+                        task_id: id,
+                        task_name: this.task
+                    });
+                    this.task = "";
+                },
+                del(id) {
+                    this.task_list = this.task_list.filter(item => item.task_id != id);
+                }
+            }
+        })
+    </script>
+</body>
+</html>

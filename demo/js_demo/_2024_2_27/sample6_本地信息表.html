@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>info</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            a {
+                color: #000;
+                text-decoration: none;
+            }
+            li {
+                list-style: none;
+            }
+            img {
+                vertical-align: top;
+            }
+        }
+        .wrapper {
+            margin: 50px auto;
+            height: 700px;
+            width: 1200px;
+            background-color: pink;
+            text-align: center;
+            h3 {
+                margin-top: 30px;
+            }
+            .register {
+                display: flex;
+                margin-top: 50px;
+                padding-left: 200px;
+                gap: 10px;
+                input {
+                    display: inline-block;
+                    width: 80px;
+                    outline: none;
+                }
+                button {
+                    display: inline-block;
+                    width: 80px;
+                }
+                select {
+                    display: inline-block;
+                    width: 50px;
+                    outline: none;
+                }
+            }
+            table {
+                margin: 30px 200px;
+                background-color: skyblue;
+                tr {
+                    height: 50px;
+                    th, td {
+                        width: 200px;
+                        border: 1px solid rgba(0, 0, 0, 0.2);
+                        a {
+                            color: red;
+                        }
+                    }
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h3>新增学员</h3>
+        <form class="register" autocomplete="off">
+            姓名：<input type="text" name="uname" class="uname">
+            年龄：<input type="text" name="age" class="age">
+            性别：
+            <select name="gender" class="gender">
+                <option value="男" selected>男</option>
+                <option value="女">女</option>
+            </select>
+            薪资：<input type="text" name="salary" class="salary">
+            就业城市：
+            <select name="city" class="city">
+                <option value="北京" selected>北京</option>
+                <option value="上海">上海</option>
+                <option value="杭州">杭州</option>
+                <option value="成都">成都</option>
+                <option value="昆明">昆明</option>
+            </select>
+            <button type="submit">录入</button>
+        </form>
+        <h3>就业榜</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>性别</th>
+                    <th>薪资</th>
+                    <th>就业城市</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script>
+        // 学生信息对象数组
+        let info_set = JSON.parse(localStorage.getItem("iset")) || [];
+        let render_arr = [];
+        let id_set = new Set();
+
+        // 界面元素
+        const form = document.querySelector(".wrapper form");
+        const table = document.querySelector("table tbody");        
+        // render();
+
+        // 表单提交
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            // 1. 获取信息压入数组
+            data_obtain_save();
+            // 2. 将数组中的信息实时渲染到网页中
+            render();
+            // 重置表单
+            this.reset();
+        })
+
+        // 信息保存
+        function data_obtain_save() {
+            // 0 1 2 3 4分别对应表单信息name, age...，存入数组
+            let id = 10000 + parseInt(Math.random() * 1000);
+            // 分配学号id
+            while(id_set.has(id)) id = 10000 + parseInt(Math.random() * 1000);
+            id_set.add(id);
+            const info = {
+                "id": id,
+                "name": form.children[0].value,
+                "age": form.children[1].value,
+                "gender": form.children[2].value,
+                "salary": form.children[3].value,
+                "city": form.children[4].value
+            };
+            info_set.push(info);
+            // 保存到本地存储
+            localStorage.setItem("iset", JSON.stringify(info_set));
+        }
+
+        // 渲染表格
+        function render() {
+            const arr = JSON.parse(localStorage.getItem("iset"));
+            // console.info("对象数组: ", arr);
+            // 构建tr
+            render_arr = arr.map(function(ele, index) {
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${ele.id}</td>
+                        <td>${ele.name}</td>
+                        <td>${ele.age}</td>
+                        <td>${ele.gender}</td>
+                        <td>${ele.salary}</td>
+                        <td>${ele.city}</td>
+                        <td><a href="javascript:;">删除</a></td>
+                    </tr>
+                `;
+            });
+            // 将tr插入到tbody中
+            const list = render_arr.join("");
+            table.innerHTML = list;
+        }
+
+        // 行tr删除操作
+        table.addEventListener("click", function(e) {
+            // 先删除数组中的元素
+            if(e.target.tagName === "A") {
+                if(confirm("确定要删除这条数据吗?")) {
+                    // 获取到行
+                    const tr = e.target.parentNode.parentNode;
+                    // 获取序号
+                    const index = tr.children[0].innerHTML - 1;
+                    // 根据序号找到数组中对应元素，删除并同步到本地存储
+                    info_set.splice(index, 1);
+                    localStorage.setItem("iset", JSON.stringify(info_set));
+                    // 再渲染
+                    render();
+                }
+            }
+        })
+
+        // 鼠标悬浮高光行
+        table.addEventListener("mouseover", function(e) {
+            if(e.target.tagName === "TD") {
+                const parent_tr = e.target.parentNode;      // 获取到tr
+                parent_tr.addEventListener("mouseover", function() {
+                    parent_tr.style.backgroundColor = "yellow";
+                })
+                parent_tr.addEventListener("mouseleave", function() {
+                    parent_tr.style.backgroundColor = "skyblue";
+                })
+            }
+        })
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>js</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            li {
+                list-style: none;
+            }
+            a {
+                text-decoration: none;
+            }
+        }
+
+        div {
+            width: 1200px;
+            height: 1500px;
+            margin: 100px auto;
+            background-color: pink;
+            padding: 50px 30px;
+            ul {
+                background-color: green;
+                padding: 50px 50px;
+                display: flex;
+                width: 1100px;
+                height: 600px;
+                li {
+                    background-color: white;
+                    width: 200px;
+                    height: 220px;
+                    img {
+                        width: 200px;
+                        height: 130px;
+                    }
+                }
+                h4 {
+                    font-size: 22px;
+                    margin: 5px 10px;
+                }
+                strong {
+                    font-weight: 400;
+                    margin: 5px 10px;
+                }
+                p {
+                    margin-left: 10px;
+                    color: #999;
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <ul>
+            <script>
+                // 使用字符串模板来跨行输入和变量输出
+                let cards = [{"img":"https://i2.hdslb.com/bfs/archive/c8adaf85ea7b3332ade99c0c76bc59a8bb4afc1b.jpg@672w_378h_1c_!web-home-common-cover.webp"
+                            , "title":"人工智能"
+                            , "sub_title":"必学课程"
+                            , "desc":"神经网络入门课"}, 
+                            {"img":"https://i2.hdslb.com/bfs/archive/a68ef3ea9de654dd35a40b9c389dd946dc98e905.jpg@672w_378h_1c_!web-home-common-cover.webp"
+                            , "title":"女同迷惑行为"
+                            , "sub_title":"选学课程"
+                            , "desc":"嗨嗨嗨"},
+                            {"img":"https://i2.hdslb.com/bfs/archive/740e2dc6dd8ffccfee71ed66033846381cac1bc1.jpg@672w_378h_1c_!web-home-common-cover.webp"
+                            , "title":"高中开发游戏日志"
+                            , "sub_title":"必学课程"
+                            , "desc":"游戏开发unity"},
+                            {"img":"https://i2.hdslb.com/bfs/archive/a750c8cd622367878aaca3fdb22a67eb01495541.jpg@672w_378h_1c_!web-home-common-cover.webp"
+                            , "title":"冥王星有多可怕"
+                            , "sub_title":"必学课程"
+                            , "desc":"行星物理学"},
+                            ];
+                for(let i = 0; i < cards.length; ++i) {
+                    document.write(`
+                    <li>
+                        <img src="${cards[i].img}" type="123">
+                        <h4>${cards[i].title}</h4>
+                        <strong>${cards[i].sub_title}</strong>
+                        <p>${cards[i].desc}</p>
+                    </li>
+                    `);
+                }
+            </script>
+        </ul>
+        <script>
+            // log打印
+            // const box = document.querySelector("div");
+            // console.log(box);
+            // const box2 = document.querySelector("ul li:first-child");
+            // console.log(box2);
+        </script>
+    </div>
+</body>
+</html>

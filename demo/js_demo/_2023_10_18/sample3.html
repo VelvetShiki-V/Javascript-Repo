@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图</title>
+    <link rel="stylesheet" href="./font_Lib/iconfont/iconfont.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .banner {
+            margin: 100px auto;
+            width: 620px;
+            height: 420px;
+            /* background-color: pink; */
+            overflow: hidden;
+            position: relative;
+            border-radius: 10%;
+        }
+
+        .banner ul {
+            display: flex;
+        }
+
+        .banner ul li img {
+            height: 400px;
+            width: 610px;
+            vertical-align: middle;
+            border-radius: 10%;
+            transition: all 1s;
+        }
+
+        .banner ul li img:hover {
+            width: 620px;
+            height: 420px;
+        }
+
+        /* 左右浏览按钮整体设置 */
+        .banner .prev, .banner .next {
+            display: none;
+            position: absolute;
+            height: 30px;
+            width: 30px;
+            background-color: rgba(0, 0, 0, 0.3);
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: center;
+            vertical-align: auto;
+        }
+
+        .banner:hover .prev, .banner:hover .next{
+            display: block;
+        }
+
+        .banner .prev {
+            border-radius: 0 15px 15px 0;
+            left: 0;
+        }
+
+        .banner .next {
+            border-radius: 15px 0 0 15px;
+            right: 0;
+        }
+
+        .banner .prev a, .banner .next a {
+            line-height: 30px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .banner .navi {
+            position: absolute;
+            width: 80px;
+            height: 30px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            /* background-color: pink; */
+            line-height: 30px;
+        }
+
+        .banner .navi ol {
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .banner .navi ol li {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .banner .navi ol .active {
+            background-color: orange;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 广告横幅 -->
+    <div class="banner">
+        <!-- 图片区域 -->
+        <ul>
+            <li><a href="#"><img src="./images/2.jpg" alt=""></a></li>
+            <li><a href="#"><img src="./images/1.jpg" alt=""></a></li>
+            <li><a href="#"><img src="./images/3.jpg" alt=""></a></li>
+        </ul>
+        <!-- 前后按钮 -->
+        <div class="prev">
+            <a href="#" class="iconfont icon-arrow-left-bold"></a>
+        </div>
+        <div class="next">
+            <a href="#" class="iconfont icon-arrow-right-bold"></a>
+        </div>
+        <!-- 底部导航 -->
+        <div class="navi">
+            <ol>
+                <li></li>
+                <li class="active"></li>
+                <li></li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

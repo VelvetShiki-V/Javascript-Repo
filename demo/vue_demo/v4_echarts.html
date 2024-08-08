@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pie render</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0 auto;
+
+            a {
+                text-decoration: none;
+            }
+
+            li {
+                list-style: none;
+            }
+
+            box-sizing: border-box;
+        }
+        .box {
+            .wrapper {
+                width: 1200px;
+                height: 1500px;
+                background-color: rgb(228, 221, 221);
+                padding: 50px 100px;
+                .providing {
+                    display: flex;
+                    /* background-color: skyblue; */
+                    width: 600px;
+                    height: 100px;
+
+                    input {
+                        width: 200px;
+                        height: 50px;
+                        padding-left: 10px;
+                        font-size: 17px;
+                        outline: none;
+                    }
+
+                    button {
+                        width: 150px;
+                        height: 50px;
+                        background-color: rgb(8, 109, 254);
+                        color: white;
+                        outline: none;
+                        border: none;
+                        cursor: pointer;
+                    }
+                }
+                table {
+                    width: 1000px;
+
+                    thead {
+                        background-color: skyblue;
+
+                        tr {
+                            height: 60px;
+
+                            th {
+                                width: 60px;
+                            }
+                        }
+                    }
+
+                    tbody {
+                        background-color: pink;
+
+                        tr {
+                            height: 60px;
+
+                            td {
+                                text-align: center;
+                            }
+
+                            .over_budget {
+                                color: red;
+                            }
+
+                            .delete {
+                                color: green;
+                                cursor: pointer;
+                            }
+                        }
+                    }
+
+                    tfoot {
+                        background-color: white;
+
+                        tr {
+                            td {
+                                .total {
+                                    font-size: 22px;
+                                    font-weight: bold;
+                                }
+                            }
+                        }
+                    }
+                }
+                .vision {
+                    margin-top: 50px;
+                    width: 900px;
+                    height: 600px;
+                }
+                .viewable {
+                    display: none;
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="wrapper">
+            <div class="providing">
+                <input type="text" placeholder="消费名称" v-model.trim="product">
+                <input type="text" placeholder="消费金额" v-model.number="cost">
+                <button type="button" @click="create">添加账单</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>消费名称</th>
+                        <th>消费价格</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in list" :key="item.id">
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ item.desc }}</td>
+                        <td :class="{ over_budget: item.price * item.count > 500 }">{{ (item.price *
+                            item.count).toFixed(2) }}</td>
+                        <td><span class="delete" @click="del(item.id)">删除</span></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td><span class="total">消费总计: {{ total }}</span></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="vision" :class="{ viewable: list.length === 0 }"></div>
+        </div>
+    </div>
+
+    <script src="./modules/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <script>
+        const app = new Vue({
+            el: ".box",
+            data: {
+                list: [
+                    { id: 1, img: "./src/pic/g1.jpg", desc: "白色衬衫", price: 126, count: 2, isChecked: false },
+                    { id: 2, img: "./src/pic/g2.png", desc: "炫彩头盔", price: 369, count: 2, isChecked: false },
+                    { id: 3, img: "./src/pic/g3.jpg", desc: "儿童舒适泡泡鞋", price: 200, count: 1, isChecked: false },
+                    { id: 4, img: "./src/pic/g4.jpg", desc: "蓝色短靴", price: 99, count: 3, isChecked: false },
+                    { id: 5, img: "./src/pic/g5.jpg", desc: "初音联动吉他", price: 499, count: 1, isChecked: false },
+                    { id: 6, img: "./src/pic/g6.jpg", desc: "高性能跑步机", price: 1999, count: 1, isChecked: false },
+                    { id: 7, img: "./src/pic/g7.png", desc: "铝合金耐摔王头盔", price: 250, count: 2, isChecked: false }
+                ],
+                product: "",
+                cost: ""
+            },
+            computed: {
+                total() {
+                    return this.list.reduce((sum, cur) => sum + cur.price * cur.count, 0);
+                }
+            },
+            methods: {
+                del(id) {
+                    this.list = this.list.filter(item => item.id !== id);
+                    // 
+                },
+                create() {
+                    if (!this.product || !this.cost) return;
+                    this.list.push({
+                        id: +new Date(),
+                        img: "",
+                        desc: this.product,
+                        price: Number(this.cost),
+                        count: 1,
+                        isChecked: false
+                    });
+                },
+                compare(a, b) {
+                    return a.value - b.value;
+                },
+                render() {
+                    // 数据
+                    this.myChart.setOption({
+                        series: [
+                            {
+                                name: 'Access From',
+                                type: 'pie',
+                                radius: '70%',
+                                data: this.list.map(item => ({ value: item.price, name: item.desc })).sort(this.compare),
+                                emphasis: {
+                                    itemStyle: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+                            }
+                        ]
+                    })
+                }
+            },
+            // created用于异步从服务器获取数据
+            // created() {
+            //     this.render();
+            // },
+            // mounted用于在数据准备完毕后，操作DOM渲染数据
+            mounted() {
+                // 图表
+                this.myChart = echarts.init(document.querySelector(".vision"));
+                // 使用刚指定的配置项和数据显示图表。
+                this.myChart.setOption({
+                    // 标题
+                    title: {
+                        text: "本月消费账单",
+                        left: 'center'
+                    },
+                    // 悬浮
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    // 图例
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left'
+                    },
+                    // 数据
+                    series: [
+                        {
+                            name: 'Access From',
+                            type: 'pie',
+                            radius: '70%',
+                            // 是否排序
+                            // data: this.list.map(item => ({ value: item.price, name: item.desc })),
+                            data: this.list.map(item => ({ value: item.price, name: item.desc })).sort(this.compare),
+                            // data: [
+                            //     { value: 1048, name: 'Search Engine' },      // 数据模板
+                            //     { value: 735, name: 'Direct' }
+                            // ],
+                            // 阴影
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                });
+            },
+            // 数据发生变化时，立即更新渲染视图
+            watch: {
+                list: {
+                    deep: true,
+                    handler(newValue) {
+                        this.render();
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

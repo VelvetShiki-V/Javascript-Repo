@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>promise</title>
+</head>
+<body>
+    <!-- promise框架 -->
+    <!-- <script>
+        // 1. 创建Promise对象处理异步任务
+        const p = new Promise((resolve, reject) => {
+            // 计时器模拟服务器处理请求事件
+            setTimeout(() => {
+                // resolve回调方法被触发，说明异步任务处理成功；否则reject触发则处理失败
+                // resolve("处理成功");
+                reject("处理失败");
+            }, 2000)
+        });
+
+        // resolve成功执行then方法，否则执行catch
+        p.then(result => {
+            console.log(result);
+        }).catch(error => {
+            console.log(error);
+        });
+    </script> -->
+
+    <!-- promise + xhr 获取省份 -->
+    <!-- <script>
+        const p = new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open("get", "http://hmajax.itheima.net/api/province");
+            xhr.addEventListener("loadend", () => {
+                // 通过响应状态码判断请求成功或失败
+                console.log(xhr);
+                if(xhr.status >= 200 && xhr.status < 300) {
+                    resolve(JSON.parse(xhr.response));
+                }
+                else {
+                    reject(new Error(xhr.response));
+                }
+            })
+            xhr.send();
+        });
+        p.then(result => {
+            // 请求成功执行
+            console.log(result.list);
+        }).catch(error => {
+            // 请求失败执行, dir为详细打印错误信息
+            console.dir(error);
+        }); 
+    </script> -->
+
+    <!-- 模拟axios封装 -->
+    <!-- <script>
+        function my_axios(config) {
+            return new Promise((resolve, reject) => {
+                // 初始化属性
+                const xhr = new XMLHttpRequest();
+                let serialized_data = {};
+                // 查询参数
+                if(config.params) {
+                    const qs = new URLSearchParams(config.params);
+                    config.url += `?${qs.toString()}`;
+                }
+                // 请求方法判断并填入方法和url
+                xhr.open(config.method || "GET", config.url);
+                if(config.data) {
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    serialized_data = JSON.stringify(config.data);
+                }
+                // 注册响应接收方法
+                xhr.addEventListener("loadend", () => {
+                    if(xhr.status >= 200 && xhr.status < 300) {
+                        resolve(JSON.parse(xhr.response));
+                    }
+                    else {
+                        reject(new Error(xhr.response));
+                    }
+                });
+                console.log(xhr);
+                // console.log(serialized_data);
+                // 发送请求
+                config.method === "get" ? xhr.send() : xhr.send(serialized_data)
+            });
+        }
+
+        // 调用
+        my_axios({
+            // get
+            // url: "http://hmajax.itheima.net/api/province",
+            // get查询参数
+            url: "http://hmajax.itheima.net/api/area",
+            params: {
+                pname: "云南省",
+                cname: "昆明市"
+            },
+            // post
+            // url: "http://hmajax.itheima.net/api/login",
+            // method: "post",
+            // data: {
+            //     username: "velvet12345",
+            //     password: "zcx1234567"
+            // }
+        }).then(result => {
+            console.log(result);
+        }).catch(error => {
+            console.log(error);
+        });
+    </script> -->
+
+    <!-- promise.all和异步 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+    <script src="./my_axios.js"></script>
+    <script>
+        // 1. 获取一级分类
+        my_axios({
+            url: "http://hmajax.itheima.net/api/category/top"
+        }).then (result => {
+            console.log("一级promise对象: ", result);
+            // 2. 获取二级分类
+            const sub_arr = result.data.map(item => {
+                return my_axios({
+                    url: "http://hmajax.itheima.net/api/category/sub",
+                    params: { id: item.id }
+                })
+            });
+            // 3. 获取所有二级异步结果
+            const sub_ps = Promise.all(sub_arr);
+            sub_ps.then(result => {
+                console.log("二级promise对象数组", result);
+                result.map(item => {
+                    // 遍历二级promise数组，并打印data
+                    console.log(item.data);
+                })
+            }).catch(error => {
+                // 捕获二级所有promise对象请求异常
+                console.log(error);
+            })
+        }).catch(error => {
+            // 捕获一级promise请求异常
+            console.log(error);
+        })
+    </script>
+</body>
+</html>

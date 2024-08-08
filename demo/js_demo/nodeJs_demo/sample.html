@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // for in 用于遍历对象的属性
+        const obj = { a: 1, b: 2, c: 3 };
+        for (let item in obj) {
+            console.log(item);              // 属性名
+            console.log(obj[item]);         // 只能用[]写法来获取对象属性值
+            // console.log(obj.item);      // undefine
+        }
+        // console.log(Object.keys(obj));
+        // console.log(Object.values(obj));
+
+        // for of 用于遍历数组，不能用于遍历对象
+        // const array = ['a', 'b', 'c', 1, 2, 3, [4, 5, 6], "hello", "world"];
+        // for (const element of array) {
+        //     console.log(element);
+        // }
+    </script>
+</body>
+</html>

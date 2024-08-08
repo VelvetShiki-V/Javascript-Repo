@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .wrapper {
+            background-color: rgba(128, 128, 128, 0.409);
+            width: 1200px;
+            margin: 50px auto;
+            .city {
+                display: inline-block;
+                width: 500px;
+                margin-left: 80px;
+                span {
+                    display: block;
+                    font-size: 18px;
+                }
+                input {
+                    margin-top: 20px;
+                    width: 300px;
+                    height: 30px;
+                    outline: none;
+                }
+            }
+            button {
+                margin: 30px 80px;
+                width: 100px;
+                height: 50px;
+                border: 1px solid grey;
+                background-color: skyblue;
+            }
+            button:hover {
+                background-color: rgb(191, 220, 232);
+                cursor: pointer;
+            }
+            button:active {
+                background-color: rgb(50, 164, 213);
+            }
+            .area {
+                padding-left: 80px;
+                ol {
+                    li {
+                        margin-top: 10px;
+                        border-bottom: 1px solid black;
+                    }
+                }
+            }
+            .data {
+                padding-left: 80px;
+                margin-top: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="city">
+            <span>省份</span>
+            <input type="text" id="province">
+        </div>
+        <div class="city">
+            <span>城市</span>
+            <input type="text" id="city">
+        </div>
+        <button>搜索</button>
+        <div class="area">
+            <ol></ol>
+        </div>
+        <p id="data" class="data"></p>
+    </div>
+
+    <!-- 引入axios库 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js">
+        // 新闻资源：http://hmajax.itheima.net/api/news
+        // 地名资源：http://hmajax.itheima.net/api/province
+        // 市级地名: http://hmajax.itheima.net/api/city
+        // 省地名: http://hmajax.itheima.net/api/area(params: ?pname&cname)(省+市)
+        // 注册: http://hmajax.itheima.net/api/register(方法post, data: username, password)
+        // 登录: http://hmajax.itheima.net/api/login(方法post, data: username, password)
+    </script>
+    <!-- <script>
+        axios({
+            // url指定浏览器到目的服务器上获取的数据（json格式）
+            url: "http://hmajax.itheima.net/api/city",
+            // 查询参数，用于获取某写具有条件限制的资源
+            params: {
+                pname: "河北省"
+            }
+        }).then(result => {
+            // then在获取数据成功或失败后执行，result为访问数据成功或失败的响应报文对象
+            console.log(result);
+            // data为result对象中的数据对象，其中包含后端传输来的json数据
+            // console.log(result.data);
+            // 因为list为数组，所以需要join为大字符串，再输出到p中
+            document.querySelector("p").innerHTML = result.data.list.join("<br>");
+        })
+    </script> -->
+    <script>
+        province = document.querySelector("#province");
+        city = document.querySelector("#city");
+        search = document.querySelector("button");
+        ol = document.querySelector("ol");
+        received_data = document.querySelector("#data");
+        // 本地存储保存最近一次查询记录
+        province.value = localStorage.getItem("province");
+        city.value = localStorage.getItem("city");
+
+        // 点击搜索，该城市的所有区域以列表展示
+        search.addEventListener("click", () => {
+            // 重置
+            if(ol.querySelector("li")) ol.innerHTML = "";
+            received_data.innerHTML = "";
+            axios({
+                url: "http://hmajax.itheima.net/api/area",
+                // 查询参数用以指定省份和城市名
+                params: {
+                    pname: province.value,
+                    cname: city.value
+                }
+            }).then(result => {
+                // 打印观察获取到的数据
+                console.log(result.data);
+                for(attr in result.data) {
+                    received_data.innerHTML += attr + ": " + result.data[attr] + "<br>";
+                }
+                // 将关键数据用列表展示
+                for(let area of result.data.list) {
+                    const li = document.createElement("li");
+                    li.innerHTML = area;
+                    ol.appendChild(li);
+                }
+            })
+        })
+    </script>
+</body>
+</html>

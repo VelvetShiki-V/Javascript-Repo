@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue attributes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .box2 {
+            width: 1200px;
+            height: 800px;
+            margin: 50px auto;
+            padding: 0;
+            ul {
+            background-color: pink;
+            display: flex;
+            justify-content: center;
+            li {
+                text-align: center;
+                list-style: none;
+                width: 100px;
+                height: 50px;
+                border: 1px solid grey;
+                a {
+                    display: inline-block;
+                    width: 100px;
+                    height: 50px;
+                    text-decoration: none;
+                    color: black;
+                    line-height: 51px;
+                    font-size: 20px;
+                }
+            }
+        }
+        .active {
+            background-color: red;
+            color: white;
+        }
+        .registry {
+            display: block;
+            margin: 50px auto 0;
+            outline: none;
+            border: none;
+        }
+        table {
+            margin: 30px 200px;
+            background-color: skyblue;
+            thead {
+                height: 50px;
+                background-color: rgb(190, 179, 179);
+                tr {
+                    th {
+                        padding-left: 70px;
+                    }
+                }
+            }
+            tbody {
+                tr {
+                height: 50px;
+                    th, td {
+                        padding-left: 70px;
+                        width: 200px;
+                        border: 1px solid rgba(0, 0, 0, 0.2);
+                    }
+                    .delete {
+                        color: red;
+                        cursor: pointer;
+                    }
+                }
+                .fail {
+                    color: red;
+                }
+                button {
+                    outline: none;
+                    border: none;
+                }
+            }
+            tfoot {
+                background-color: pink;
+                height: 50px;
+                tr {
+                    td {
+                        text-align: center;
+                    }
+                }
+            }
+        }
+        .manipulate {
+            margin: 30px 500px;
+            input {
+                display: block;
+                width: 300px;
+                height: 50px;
+            }
+            button {
+                margin: 40px 100px;
+                display: block;
+                width: 100px;
+                height: 50px;
+
+            }
+        }
+        }
+    </style>
+</head>
+<body>
+    <!-- <div class="box1">
+        <ul>
+            <li v-for="(item, index) in link_list" :key="link_list.id" @mouseover="active_index = index;">
+                <a href="#" v-bind:class="{ active: active_index === index }">{{ item.name }}</a>
+            </li>
+        </ul>
+    </div> -->
+
+    <div class="box2">
+        <!-- 信息表格 -->
+        <table>
+        <!-- <table v-show="total_count() != 0"> -->
+            <thead>
+                <tr>
+                    <th>选中 <input type="checkbox" @change="select_all"></th>
+                    <th>倍率</th>
+                    <th>科目</th>
+                    <th>成绩</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in grade_list" :key="item.id">
+                    <td><input type="checkbox" :checked="item.isChecked" @change="item.isChecked = !item.isChecked"></td>
+                    <td>
+                        <button v-show="item.ratio >= 2" @click="mark_alter(item, -1)">-</button>
+                        <span>{{ item.ratio }}</span>
+                        <button @click="mark_alter(item, 1)">+</button>
+                    </td>
+                    <td>{{ item.subject }}</td>
+                    <td :class="{ fail: item.mark < 60 }">{{ item.mark * item.ratio }}</td>
+                    <td class="delete" @click="del(index)">删除</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">总分: {{ total }}</td>
+                    <td colspan="3">平均分: {{ average }}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="manipulate">
+            <input type="text" name="subject" v-model.trim="subject" placeholder="请输入学科名">
+            <input type="text" v-model.number="grade" placeholder="分数">
+            <input type="text" v-model="selected" placeholder="是否选中">
+            <input type="text" v-model="ratio" placeholder="倍率">
+            <button @click="mark_in">录入</button>
+        </div>
+    </div>
+
+    <script src="./modules/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // const app1 = new Vue({
+    //     el: ".box1",
+    //     data: {
+    //         active_index: 0,
+    //         link_list: [
+    //             {id: 1, name: "精选好物"},
+    //             {id: 2, name: "美食特惠"},
+    //             {id: 3, name: "家居不错"},
+    //             {id: 4, name: "小吃美食"},
+    //             {id: 5, name: "走亲送友"}
+    //         ]
+    //     }
+    // })
+
+    const app2 = new Vue({
+        el: ".box2",
+        data: {
+            all_checked: 0,
+            ratio: 1,
+            selected: 0,
+            subject: "",
+            grade: 0,
+            total: 0,
+            average: 0,
+            // {id: 1, ratio: 1, subject: "语文", mark: "88", isChecked: false}
+            grade_list: []
+        },
+        methods: {
+            del(index) {
+                this.grade_list.splice(index, 1);
+                // localStorage.setItem("grade_list", JSON.stringify(this.grade_list));
+            },
+            mark_in() {
+                const row = {
+                    id: +new Date(),
+                    ratio: Number(this.ratio),
+                    isChecked: this.selected == 0 ? false : true,
+                    subject: this.subject,
+                    mark: Number(this.grade * this.ratio)
+                };
+                this.grade_list.push(row);
+                // localStorage.setItem("grade_list", JSON.stringify(this.grade_list));
+            },
+            select_all() {
+                if(!this.all_checked) {
+                    for(item of this.grade_list) item.isChecked = true;
+                    this.all_checked = 1;
+                }
+                else {
+                    for(item of this.grade_list) item.isChecked = false;
+                    this.all_checked = 0;
+                }
+                    
+            },
+            total_count() {
+                let total = 0;
+                for(item of this.grade_list) {
+                    if(item.isChecked) total += item.mark * item.ratio;
+                }
+                return total;
+            },
+            average_count() {
+                this.average = 0;
+                let total = 0, selected = 0;
+                for(item of this.grade_list) {
+                    if(item.isChecked) {
+                        total += item.mark;
+                        selected++;
+                    }
+                }
+                return (total / selected).toFixed(1) || 0;
+            },
+            mark_alter(item, val) {
+                console.log(typeof item.ratio);
+                console.log(typeof val);
+                item.ratio += Number(val);
+                // if(val >= 0) item.mark *= Number(item.ratio);
+                // else item.mark /= Number(item.ratio + 1);
+            }
+        },
+        watch: {
+            grade_list: {
+                deep: true,
+                handler (newValue) {
+                    this.total = this.total_count();
+                    this.average = this.average_count();
+                }
+            }
+        }
+    });
+    </script>
+</body>
+</html>

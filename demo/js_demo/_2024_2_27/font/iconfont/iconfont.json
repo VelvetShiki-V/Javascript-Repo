@@ -1,0 +1,86 @@
+{
+  "id": "4396294",
+  "name": "xmly",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "745695",
+      "name": "cycle",
+      "font_class": "cycle",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "90853",
+      "name": "rank_fill",
+      "font_class": "rankfill",
+      "unicode": "e721",
+      "unicode_decimal": 59169
+    },
+    {
+      "icon_id": "109799",
+      "name": "upload",
+      "font_class": "upload",
+      "unicode": "e656",
+      "unicode_decimal": 58966
+    },
+    {
+      "icon_id": "248925",
+      "name": "down",
+      "font_class": "down",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    },
+    {
+      "icon_id": "248951",
+      "name": "adjust",
+      "font_class": "adjust",
+      "unicode": "e67c",
+      "unicode_decimal": 59004
+    },
+    {
+      "icon_id": "637751",
+      "name": "PC",
+      "font_class": "pc",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "1462883",
+      "name": "category",
+      "font_class": "category",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "4767012",
+      "name": "left",
+      "font_class": "left",
+      "unicode": "e7eb",
+      "unicode_decimal": 59371
+    },
+    {
+      "icon_id": "4767079",
+      "name": "font-colors",
+      "font_class": "font-colors",
+      "unicode": "e7f7",
+      "unicode_decimal": 59383
+    },
+    {
+      "icon_id": "20284930",
+      "name": "search",
+      "font_class": "search",
+      "unicode": "e7c0",
+      "unicode_decimal": 59328
+    },
+    {
+      "icon_id": "34453038",
+      "name": "right",
+      "font_class": "right",
+      "unicode": "e840",
+      "unicode_decimal": 59456
+    }
+  ]
+}

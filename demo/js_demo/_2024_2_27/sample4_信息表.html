@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            a {
+                color: #000;
+                text-decoration: none;
+            }
+            li {
+                list-style: none;
+            }
+            img {
+                vertical-align: top;
+            }
+        }
+        .wrapper {
+            margin: 50px auto;
+            height: 700px;
+            width: 1200px;
+            background-color: pink;
+            text-align: center;
+            h3 {
+                margin-top: 30px;
+            }
+            .register {
+                display: flex;
+                margin-top: 50px;
+                padding-left: 200px;
+                gap: 10px;
+                input {
+                    display: inline-block;
+                    width: 80px;
+                    outline: none;
+                }
+                button {
+                    display: inline-block;
+                    width: 80px;
+                }
+                select {
+                    display: inline-block;
+                    width: 50px;
+                    outline: none;
+                }
+            }
+            table {
+                margin: 30px 200px;
+                background-color: skyblue;
+                tr {
+                    height: 50px;
+                    th, td {
+                        width: 200px;
+                        border: 1px solid rgba(0, 0, 0, 0.2);
+                    }
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h3>新增学员</h3>
+        <form class="register" autocomplete="off">
+            <span>姓名：</span>
+            <input type="text" name="uname" class="uname">
+            <span>年龄：</span>
+            <input type="text" name="age" class="age">
+            <span>性别：</span>
+            <select name="gender" class="gender">
+                <option value="男" selected>男</option>
+                <option value="女">女</option>
+            </select>
+            <span>薪资：</span>
+            <input type="text" name="salary" class="salary">
+            <span>就业城市：</span>
+            <select name="city" class="city">
+                <option value="北京" selected>北京</option>
+                <option value="上海">上海</option>
+                <option value="杭州">杭州</option>
+                <option value="成都">成都</option>
+                <option value="昆明">昆明</option>
+            </select>
+            <button type="submit">录入</button>
+        </form>
+        <h3>就业榜</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>性别</th>
+                    <th>薪资</th>
+                    <th>就业城市</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script>
+        let id = 1;
+        const btn = document.querySelector(".register button");
+        const register = document.querySelector(".register");
+        const table = document.querySelector("table tbody");
+        const items = document.querySelectorAll(".register [name]")
+        // 录入按钮
+        register.addEventListener("submit", function(e) {
+            // 阻止表单默认跳转
+            e.preventDefault();
+            // 判空处理
+            for(let i = 0; i < items.length; ++i)
+                if(items[i].value === "") return alert("输入信息不能为空！");
+            // 获取输入值
+            let vals = [];
+            vals.push(id);
+            for(let i = 0; i < register.children.length; ++i) {
+                const child = register.children[i];
+                if(child.tagName === "INPUT" || child.tagName === "SELECT")
+                    vals.push(register.children[i].value);
+            }
+            // 创建元素
+            const tr = document.createElement("tr");
+            // 元素插入值
+            for(let i = 0; i < 7; ++i) {
+                const td = document.createElement("td");
+                if(i == 6) {
+                    const a = document.createElement("a");
+                    a.innerHTML = "删除";
+                    a.style.color = "red";
+                    a.style.cursor = "pointer";
+                    td.appendChild(a);
+                }
+                else td.innerHTML = vals[i];
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+            // 重置表单，并让学号自增
+            ++id;
+            this.reset();
+        })
+        // 行tr删除操作
+        table.addEventListener("click", function(e) {
+            if(e.target.tagName === "A") {
+                const parent_tr = e.target.parentNode.parentNode;
+                table.removeChild(parent_tr);
+            }
+        })
+        // 鼠标悬浮高光行
+        table.addEventListener("mouseover", function(e) {
+            if(e.target.tagName === "TD") {
+                const parent_tr = e.target.parentNode;      // 获取到tr
+                parent_tr.addEventListener("mouseover", function() {
+                    parent_tr.style.backgroundColor = "yellow";
+                })
+                parent_tr.addEventListener("mouseleave", function() {
+                    parent_tr.style.backgroundColor = "skyblue";
+                })
+            }
+        })
+    </script>
+</body>
+</html>

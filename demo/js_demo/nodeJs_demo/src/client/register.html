@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>register</title>
+</head>
+<body>
+    <!-- 登录 -->
+    <form>
+        <div class="area">
+            <span>用户名：</span>
+            <input type="text" id="username">
+        </div>
+        <div class="area">
+            <span>密码</span>
+            <input type="password" id="password">
+        </div>
+        <button type="submit">提交</button>
+    </form>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const username = document.querySelector("#username");
+    const password = document.querySelector("#password");
+    const form = document.querySelector("form");
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        axios({
+            url: "http://1.94.180.58/register",
+            method: "post",
+            data: {
+                username: username.value,
+                password: password.value
+            }
+        }).then(result => {
+            // console.log("result: ",result);
+            if(result.data.status === 200 || result.data.message === "注册成功") {
+                location.href = "./regi_success.html";
+            }
+            else {
+                alert(result.data.message)
+            }
+        }).catch(err => {
+            alert(err.message);
+        })
+    })
+</script>
+</body>
+</html>
