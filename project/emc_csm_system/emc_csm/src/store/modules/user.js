@@ -25,7 +25,11 @@ export default {
     }
   },
   actions: {
-    // 登录获取token
+    // 验证是否管理员
+    async admin_verify_async (context, loginData) {
+      return await emcRequest.postAdminVerift(loginData)
+    },
+    // SSE登录获取token
     async fetch_token_async (context, loginData) {
       const load = Loading.service({
         lock: true,

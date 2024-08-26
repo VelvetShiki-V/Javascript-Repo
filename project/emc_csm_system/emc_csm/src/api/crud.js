@@ -32,12 +32,17 @@ async function postDelete (postData) {
 
 // 登出
 async function postLogout (postData) {
-  await request.post('/logout', postData)
+  await request.post('/admin/user/logout', postData)
 }
 
 // token验证
 async function postVerify (postData) {
-  return await request.post('/verify', postData)
+  return await request.post('/admin/user/verify', postData)
+}
+
+// 管理员验证
+async function postAdminVerift (postData) {
+  return await request.post('/admin/user/verifyadm', postData)
 }
 
 export const emcRequest = {
@@ -48,5 +53,6 @@ export const emcRequest = {
   postDelete,
   postBrowse,
   postLogout,
-  postVerify
+  postVerify,
+  postAdminVerift
 }

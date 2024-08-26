@@ -2,8 +2,8 @@
 import axios from 'axios'
 import { Message, Loading } from 'element-ui'
 const instance = axios.create({
-  baseURL: 'http://1.94.180.58:80',
-  // baseURL: 'https://cloud.myemc.net.cn:8199',
+  // baseURL: 'http://1.94.180.58:80',    used as test server
+  baseURL: 'https://cloud.myemc.net.cn',
   headers: { 'Content-Type': 'application/json' },
   timeout: 10000
 })

@@ -32,7 +32,7 @@ export default {
     console.log('仓库用户数据: ', JSON.parse(JSON.stringify(this.userInfo)))
   },
   methods: {
-    ...mapActions('user', ['fetch_token_async']),
+    ...mapActions('user', ['fetch_token_async', 'admin_verify_async']),
     ...mapMutations('user', ['remove_token']),
     sha256Encode () {
       const pwd = this.password
@@ -50,6 +50,10 @@ export default {
       console.log('信息装载完毕，发送: ', loginData)
 
       // 登录信息发送，并获取uid和token存入vuex仓库
+      // TODO: 先验证是否为管理员，再进行SSE连接
+      await this.admin_verify_async(loginData)
+      this.$message.success('管理员认证成功')
+      // ...
       await this.fetch_token_async(loginData)
       this.$message.success('登录成功!获取到用户token: ' + this.userInfo.token)
       console.log('仓库用户数据: ', JSON.parse(JSON.stringify(this.userInfo)))

@@ -2,7 +2,7 @@
   <div class="navigator">
     <router-link to="/login" v-if="!userInfo.token">登 录</router-link>
     <span @click="logout" v-else>登 出</span>
-    <router-link to="/home">注 册</router-link>
+    <router-link to="https://cloud.myemc.net.cn/registry/user/submit">注 册</router-link>
     <router-link to="/home">主 页</router-link>
   </div>
 </template>
@@ -15,15 +15,15 @@ export default {
     ...mapActions('user', ['logout_async']),
     ...mapMutations('user', ['remove_token']),
     async logout () {
-      const postData = {
-        user: 'guest',
-        token: this.userInfo.token
-      }
-      await this.logout_async(postData)
-      this.$notify.success('登出成功')
+      // const postData = {
+      //   user: 'guest',
+      //   token: this.userInfo.token
+      // }
+      // await this.logout_async(postData)
       // 清理token
       this.remove_token()
       this.$router.replace('/login')
+      this.$notify.success('登出成功')
     }
   },
   computed: {
