@@ -42,7 +42,7 @@ export default {
         // 监听具名事件: session/token; 若监听的event为内置值, 则可以使用onmessage进行默认监听
         eventSource = new EventSource(requestUrl)
         eventSource.addEventListener('session/token', (e) => {
-          // console.log('event: ', e)
+          console.log('event: ', e)
           console.log('received stream data: ', e.data)
           context.commit('fetch_token', {
             user: loginData.user,

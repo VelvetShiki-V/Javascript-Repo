@@ -5,7 +5,7 @@ const instance = axios.create({
   // baseURL: 'http://1.94.180.58:80',    used as test server
   baseURL: 'https://cloud.myemc.net.cn',
   headers: { 'Content-Type': 'application/json' },
-  timeout: 10000
+  timeout: 5000
 })
 
 // loading默认单例模式

@@ -51,9 +51,12 @@ export default {
 
       // 登录信息发送，并获取uid和token存入vuex仓库
       // TODO: 先验证是否为管理员，再进行SSE连接
-      await this.admin_verify_async(loginData)
-      this.$message.success('管理员认证成功')
-      // ...
+      const ret = await this.admin_verify_async(loginData)
+      if (ret === true) this.$message.success('管理员认证成功')
+      else {
+        this.$message.error('管理员认证失败')
+        return
+      }
       await this.fetch_token_async(loginData)
       this.$message.success('登录成功!获取到用户token: ' + this.userInfo.token)
       console.log('仓库用户数据: ', JSON.parse(JSON.stringify(this.userInfo)))
