@@ -7,8 +7,7 @@ import quasarLang from 'quasar/lang/zh-CN'
 import router from './router'
 import pinia from '@/stores/index'
 // 全局样式
-import '@/styles/style.css'
-
+import '@/styles/global.css'
 // Import icon libraries
 import '@quasar/extras/roboto-font-latin-ext/roboto-font-latin-ext.css'
 import '@quasar/extras/material-icons/material-icons.css'
@@ -19,11 +18,6 @@ import '@quasar/extras/ionicons-v4/ionicons-v4.css'
 import '@quasar/extras/line-awesome/line-awesome.css'
 // Import Quasar css
 import 'quasar/dist/quasar.css'
-import { fabRProject } from '@quasar/extras/fontawesome-v5'
-
-// A few examples for animations from Animate.css:
-// import @quasar/extras/animate/fadeIn.css
-// import @quasar/extras/animate/fadeOut.css
 
 const app = createApp(App)
 app.use(createPinia().use(persist))

@@ -3,135 +3,121 @@ import { ref } from 'vue'
 import { useUserStore } from '@/stores'
 import { useRouter } from 'vue-router'
 import { LoginForm } from '@/types/user'
+import { ElMessage } from 'element-plus'
 
+const formRef = ref()
+const userStore = useUserStore()
+const router = useRouter()
+const accept = ref(false)
+
+// 表单结构
 const formModel = ref<LoginForm>({
   name: '',
   password: ''
 })
-const formRef = ref()
-const userStore = useUserStore()
-const router = useRouter()
-const initialize = () => {
-  userStore.removeLoginUser()
-}
-initialize()
 
-const rules = {
-  username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 2, max: 16, message: '用户名必须是2-16位非空字符', trigger: 'blur' }
-  ],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    // 正则校验pattern
-    {
-      pattern: /^\S{6,15}$/,
-      message: '密码必须为6-15位非空字符',
-      trigger: 'blur'
+// 登录函数
+const handleLogin = () => {
+  formRef.value.validate().then(async (success: boolean) => {
+    if (success) {
+      await userStore.loginSSO(formModel.value)
+      // 保存登录用户信息
+      await userStore.getLoginAdminInfo()
+      // 跳转主页
+      console.log('登录成功')
+      router.push('/layout')
+    } else {
+      ElMessage.error('登录失败')
     }
-  ]
+  })
 }
 
-const handleLogin = async () => {
-  await formRef.value.validate()
-  // 存储token
-  // try {
-  await userStore.loginSSO(formModel.value)
-  // } catch {
-  // return
-  // }
-  // 保存登录用户信息
-  await userStore.getLoginAdminInfo()
-  // 跳转主页
-  console.log('登录成功')
-  router.push('/layout')
-}
-
+// 重置函数
 const handleReset = () => {
-  formRef.value.resetFields()
+  formRef.value.resetValidation()
+  formModel.value.name = ''
+  formModel.value.password = ''
 }
 </script>
 
 <template>
-  <div class="login">
-    <el-row>
-      <el-col :span="12">
-        <div class="logo" />
-      </el-col>
-      <el-col :span="12">
-        <div class="form">
-          <h1>Login</h1>
-          <el-form ref="formRef" :model="formModel" :rules="rules" status-icon>
-            <el-form-item
-              label="用户名"
-              label-width="100"
-              prop="username"
-              required>
-              <el-input
-                v-model="formModel.name"
-                type="text"
-                clearable></el-input>
-            </el-form-item>
-            <el-form-item
-              label="密码"
-              label-width="100"
-              prop="password"
-              required>
-              <el-input
-                v-model="formModel.password"
-                type="password"
-                clearable></el-input>
-            </el-form-item>
-            <el-button type="primary" @click="handleLogin">登录</el-button>
-            <el-button type="warning" @click="handleReset">重置</el-button>
-          </el-form>
-        </div>
-      </el-col>
-    </el-row>
+  <div class="login row flex-center">
+    <div class="col-5" style="padding-left: 5%">
+      <div class="logo" />
+    </div>
+    <div class="col-5">
+      <div class="form">
+        <h2 style="font-weight: 700">Admin</h2>
+        <q-form ref="formRef" :model="formModel">
+          <q-input
+            v-model="formModel.name"
+            :rules="[
+              (name) => (name !== null && name !== '') || '请输入正确用户名',
+              (name) =>
+                (name.length >= 2 && name.length <= 16) ||
+                '用户名必须是2-16位非空字符'
+            ]"
+            lazy-rules
+            type="text"
+            label="Admin Name"
+            clearable
+            autofocus></q-input>
+          <q-input
+            v-model="formModel.password"
+            :rules="[
+              (pwd) => (pwd !== null && pwd !== '') || '请输入正确密码',
+              (pwd) => pwd.length > 5 || '密码必须大于5位'
+            ]"
+            label="Admin Pwd"
+            type="password"
+            clearable></q-input>
+          <q-btn color="primary" label="登录" @click="handleLogin"></q-btn>
+          <q-btn
+            color="warning"
+            label="重置"
+            type="reset"
+            @click="handleReset"></q-btn>
+          <q-toggle v-model="accept" label="我同意用户条款《安全协议》" />
+        </q-form>
+      </div>
+    </div>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .login {
+  position: fixed;
   width: 100%;
-  height: 1000px;
-  background-image: url(@/assets/star.avif);
+  height: 100%;
+  background-image: url(@/assets/background.png);
   background-size: cover;
   background-repeat: no-repeat;
 
   .logo {
-    margin: 150px;
     width: 500px;
     height: 500px;
-    background-image: url(@/assets/EMC.gif);
+    background-image: url(@/assets/logo.gif);
     border-radius: 10%;
   }
 
   .form {
-    margin: 150px 0;
     width: 700px;
     height: 500px;
-    background-color: rgba(200, 135, 235, 0.75);
+    background-color: rgba(145, 194, 237, 0.75);
     padding: 50px;
     text-align: center;
     border-radius: 50%;
 
-    .el-form {
-      margin: 80px;
+    .q-form {
+      margin: 40px;
 
-      .el-form-item {
-        margin: 50px 0;
-
-        .el-input {
-          width: 250px;
-          margin-left: 0;
-        }
+      .q-input {
+        font-size: 20px;
       }
-
-      .el-button {
-        margin: 0 30px;
-        width: 100px;
-        height: 40px;
+      .q-btn {
+        margin: 30px;
+        width: 150px;
+        height: 50px;
       }
     }
   }

@@ -7,9 +7,9 @@ export const useUserStore = defineStore(
   'user',
   () => {
     // token
-    // const token = ref<string>()
+    const token = ref<string>()
     const loginSSO = async (form: LoginForm) => {
-      await adminLoginService(form)
+      token.value = await adminLoginService(form)
     }
 
     // AdminInfo
@@ -17,13 +17,12 @@ export const useUserStore = defineStore(
     const getLoginAdminInfo = async () => {
       loginAdminInfo.value = await adminInfoService()
     }
-    const removeLoginUser = () => delete loginAdminInfo.value
 
     return {
+      token,
       loginSSO,
       loginAdminInfo,
-      getLoginAdminInfo,
-      removeLoginUser
+      getLoginAdminInfo
     }
   },
   {

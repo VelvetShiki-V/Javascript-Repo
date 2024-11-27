@@ -10,6 +10,13 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest'
   },
+  // 声明element-plus自动导入，报错不提示
+  globals: {
+    ElMessage: 'readonly',
+    ElMessageBox: 'readonly',
+    ElLoading: 'readonly',
+    ElNotification: 'readonly'
+  },
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': [
