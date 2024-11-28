@@ -88,22 +88,28 @@ const handleCommand = async (path: string) => {
             <el-icon>
               <List />
             </el-icon>
-            <span>TASK3</span>
+            <span>标签与分类</span>
           </template>
-          <el-menu-item index="3-1" route="/default">SUBTASK1</el-menu-item>
-          <el-menu-item index="3-2" route="/default">SUBTASK2</el-menu-item>
+          <el-menu-item index="3-1" route="/tag">标签</el-menu-item>
+          <el-menu-item index="3-2" route="/category">分类</el-menu-item>
         </el-sub-menu>
-        <el-menu-item index="4" route="/default">
+        <el-menu-item index="4" route="/role">
           <el-icon>
             <List />
           </el-icon>
-          <span>TASK4</span>
+          <span>角色</span>
         </el-menu-item>
-        <el-menu-item index="5" route="/default">
+        <el-menu-item index="5" route="/album">
           <el-icon>
             <List />
           </el-icon>
-          <span>TASK5</span>
+          <span>相簿</span>
+        </el-menu-item>
+        <el-menu-item index="5" route="/about">
+          <el-icon>
+            <List />
+          </el-icon>
+          <span>关于</span>
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -123,26 +129,15 @@ const handleCommand = async (path: string) => {
           @select="handleSelectTop">
           <el-menu-item index="1" route="/layout">首页</el-menu-item>
           <el-sub-menu index="2">
-            <template #title>关于</template>
-            <el-menu-item @click="goToLink('https://cloud.myemc.net.cn:3000')"
-              >Gitea仓库</el-menu-item
-            >
-            <el-menu-item @click="goToLink('https://www.myemc.net.cn')"
-              >官方网站</el-menu-item
-            >
-            <el-menu-item
-              @click="goToLink('https://www.myemc.net.cn/index.do?software')"
-              >软件中心</el-menu-item
-            >
+            <template #title>Github</template>
+            <el-menu-item @click="goToLink('https:')">Gitea仓库</el-menu-item>
+            <el-menu-item @click="goToLink('https:')">官方网站</el-menu-item>
+            <el-menu-item @click="goToLink('https://')">软件中心</el-menu-item>
           </el-sub-menu>
-          <el-menu-item
-            index="3"
-            @click="goToLink('https://cloud.myemc.net.cn/registry/user/submit')"
+          <el-menu-item index="3" @click="goToLink('https://')"
             >注册</el-menu-item
           >
-          <el-menu-item index="4" @click="goToLink('https://www.myemc.net.cn')"
-            >帮助</el-menu-item
-          >
+          <el-menu-item index="4" route="/about">帮助</el-menu-item>
 
           <!--    下拉信息中心-->
           <div class="flex-grow" />

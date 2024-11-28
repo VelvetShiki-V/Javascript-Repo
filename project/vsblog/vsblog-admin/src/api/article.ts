@@ -1,9 +1,11 @@
+import { ArticleDataVO } from '@/types/vo/ArticleDataVO'
 import request from '@/utils/request'
-import { ArticleAdmin } from '@/types/article'
 
-const getAllArticles = async (): Promise<Array<ArticleAdmin>> => {
+const getAllArticles = async (): Promise<ArticleDataVO> => {
   console.log('文章列表获取')
-  return await request.get('/articles/all')
+  const data: ArticleDataVO = await request.get('/adminArticles?isDelete=0')
+  console.log('获取到文章数据: ', data)
+  return data
 }
 
 export { getAllArticles }

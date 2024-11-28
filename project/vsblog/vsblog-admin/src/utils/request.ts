@@ -2,7 +2,7 @@ import axios from 'axios'
 import router from '@/router'
 import { ElLoading, ElMessage } from 'element-plus'
 import type { LoadingInstance } from 'element-plus/es/components/loading/src/loading'
-import type { APIResponse } from '../types/response'
+import type { APIResponse } from '../types/ApiResponse'
 
 const instance = axios.create({
   baseURL: 'http://localhost:8088',
@@ -32,8 +32,6 @@ instance.interceptors.request.use(
       })
     }
     // sa-token自动设置set-cookie
-    // config.headers.Cookie = userStore.token
-    // console.log('发起请求携带token: ', userStore.token)
     return config
   },
   (error) => {
@@ -46,13 +44,12 @@ instance.interceptors.response.use(
   (response) => {
     loadingClose()
     const res: APIResponse = response.data
-    ElMessage.success('接收到服务端数据: ' + res)
     console.log('接收到服务端数据: ', res)
     if (res.flag === false) {
       ElMessage.error('操作失败: ' + res.message)
       return Promise.reject(res.message)
     }
-    return res?.data?.data
+    return res?.data
   },
   (error) => {
     loadingClose()

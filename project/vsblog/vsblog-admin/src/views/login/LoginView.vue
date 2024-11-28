@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import { useUserStore } from '@/stores'
 import { useRouter } from 'vue-router'
-import { LoginForm } from '@/types/user'
 import { ElMessage } from 'element-plus'
+import { UserAuthDTO, userAuthDTOInit } from '@/types/dto/UserAuthDTO'
 
 const formRef = ref()
 const userStore = useUserStore()
@@ -11,10 +11,7 @@ const router = useRouter()
 const accept = ref(false)
 
 // 表单结构
-const formModel = ref<LoginForm>({
-  name: '',
-  password: ''
-})
+const formModel = ref<UserAuthDTO>(userAuthDTOInit())
 
 // 登录函数
 const handleLogin = () => {
@@ -35,8 +32,7 @@ const handleLogin = () => {
 // 重置函数
 const handleReset = () => {
   formRef.value.resetValidation()
-  formModel.value.name = ''
-  formModel.value.password = ''
+  formRef.value = userAuthDTOInit()
 }
 </script>
 

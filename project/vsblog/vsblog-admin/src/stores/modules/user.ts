@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { adminLoginService, adminInfoService } from '@/api/user'
-import { LoginForm, AdminInfo } from '@/types/user'
+import { LoginForm, AdminInfo } from '@/types/form/user'
 
 export const useUserStore = defineStore(
   'user',

@@ -1,16 +1,19 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { getAllArticles } from '@/api/article'
-import { ArticleAdmin } from '@/types/article'
+import { ArticleDataVO, articleDataVOInit } from '@/types/vo/ArticleDataVO'
 
 export const useArticleStore = defineStore('article', () => {
   // 文章列表
-  const articleList = ref<Array<ArticleAdmin>>([])
+  const articleData = ref<ArticleDataVO>(articleDataVOInit())
   const getArticlesListAsync = async () => {
-    articleList.value = await getAllArticles()
+    const data: ArticleDataVO = await getAllArticles()
+    articleData.value.count = data.count
+    articleData.value.records = data.records
   }
 
   return {
+    articleData,
     getArticlesListAsync
   }
 })
