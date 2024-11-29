@@ -10,11 +10,16 @@ import {
   ArticleTopFeaturedDTO,
   articleTopFeaturedDTOInit
 } from '@/types/dto/ArticleTopFeaturedDTO'
+import {
+  ArticleFilterDTO,
+  articleFilterDTOInit
+} from '@/types/dto/ConditionDTO'
 
 // 响应式数据
 const dataLoading = ref<boolean>(true)
 const articleStore = useArticleStore()
 const topFeaturedForm = ref<ArticleTopFeaturedDTO>(articleTopFeaturedDTOInit())
+const articleFilterForm = ref<ArticleFilterDTO>(articleFilterDTOInit())
 
 // 初始化
 const initialize = async () => {
@@ -29,7 +34,9 @@ initialize()
 
 // 方法
 const handleCreateNode = () => {}
-const handleQuery = () => {}
+const handleQuery = () => {
+  console.log('接收到过滤条件数据: ', articleFilterForm)
+}
 const handleEdit = (row: ArticleAdminVO) => {
   console.log(row)
 }
@@ -49,6 +56,9 @@ const handleTopFeaturedChanged = (row: ArticleTopFeaturedDTO) => {
     <!-- 具名插槽头部 -->
     <template #operation>
       <el-button type="primary" @click="handleCreateNode">创建文章</el-button>
+      <el-button type="success" @click="handleCreateNode">批量导入</el-button>
+      <el-button type="warning" @click="handleCreateNode">批量导出</el-button>
+      <el-button type="danger" @click="handleCreateNode">批量删除</el-button>
     </template>
 
     <!-- 匿名插槽主体 -->
@@ -153,7 +163,11 @@ const handleTopFeaturedChanged = (row: ArticleTopFeaturedDTO) => {
         </template>
       </el-table-column>
       <!--        操作-->
-      <el-table-column label="Operations" align="center">
+      <el-table-column
+        label="Operations"
+        align="center"
+        fixed="right"
+        min-width="170">
         <template #default="scope">
           <el-tooltip content="编辑文章" placement="top">
             <el-button

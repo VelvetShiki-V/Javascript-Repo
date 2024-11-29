@@ -1,3 +1,4 @@
+// 文章推荐和置顶表单
 export type ArticleTopFeaturedDTO = {
   id: number
   isTop: number

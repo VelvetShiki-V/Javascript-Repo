@@ -2,7 +2,7 @@
 import {
   ArticleFilterDTO,
   articleFilterDTOInit
-} from '@/types/dto/ArticleFilterDTO'
+} from '@/types/dto/ConditionDTO'
 import { ref } from 'vue'
 
 // 组件实例和响应式数据
@@ -19,14 +19,14 @@ const handleReset = () => {
 
 <template>
   <el-form inline class="queryForm">
-    <el-form-item label="文章标题: ">
+    <el-form-item label="标题关键字">
       <el-input v-model="params.keywords" style="width: 200px" clearable />
     </el-form-item>
 
-    <el-form-item label="分类: ">
+    <el-form-item label="分类">
       <el-select
         v-model="params.categoryId"
-        style="width: 200px"
+        style="width: 100px"
         filterable
         clearable>
         <el-option
@@ -37,14 +37,30 @@ const handleReset = () => {
       </el-select>
     </el-form-item>
 
-    <el-form-item label="标签: ">
+    <el-form-item label="标签">
       <el-input v-model="params.tag" style="width: 100px" clearable />
     </el-form-item>
-    <el-form-item label="状态: ">
-      <el-input v-model="params.status" style="width: 100px" clearable />
+    <el-form-item label="状态">
+      <el-select
+        v-model="params.categoryId"
+        style="width: 200px"
+        filterable
+        clearable>
+        <el-option label="公开" value="1" />
+        <el-option label="私密" value="2" />
+        <el-option label="草稿" value="3" />
+      </el-select>
     </el-form-item>
-    <el-form-item label="类型: ">
-      <el-input v-model="params.type" style="width: 100px" clearable />
+    <el-form-item label="类型">
+      <el-select
+        v-model="params.categoryId"
+        style="width: 100px"
+        filterable
+        clearable>
+        <el-option label="原创" value="1" />
+        <el-option label="转载" value="2" />
+        <el-option label="翻译" value="3" />
+      </el-select>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" plain round @click="emit('on-query', params)"
