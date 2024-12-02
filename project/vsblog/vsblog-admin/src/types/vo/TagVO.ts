@@ -1,12 +1,12 @@
 // 文章标签渲染
-export type CategoryVO = {
+export type TagVO = {
   id: number
   tagName: string
   articleCount: number
   createTime: number
 }
 
-export const categoryVOInit = (): CategoryVO => {
+export const tagVOInit = (): TagVO => {
   return {
     id: 0,
     tagName: '',

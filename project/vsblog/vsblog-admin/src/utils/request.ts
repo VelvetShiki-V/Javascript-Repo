@@ -6,7 +6,15 @@ import type { APIResponse } from '../types/ApiResponse'
 
 const instance = axios.create({
   baseURL: 'http://localhost:8088',
-  timeout: 10000
+  timeout: 10000,
+  // 通过 paramsSerializer 自定义查询参数的序列化方式
+  // entries包含key,val组成的数组, filter过滤undefined, map创建新数组构建url
+  paramsSerializer: (params) => {
+    return Object.entries(params || {})
+      .filter(([key, value]) => value !== undefined)
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
+      .join('&')
+  }
 })
 // 允许携带Cookie
 instance.defaults.withCredentials = true

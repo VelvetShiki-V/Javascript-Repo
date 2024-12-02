@@ -12,8 +12,8 @@ export type ConditionDTO = {
 
 export const conditionDTOInit = (): ConditionDTO => {
   return {
-    current: 0,
-    size: 0,
+    current: 1,
+    size: 10,
     keywords: '',
     categoryId: 0,
     tagId: 0,

@@ -2,13 +2,7 @@
 import { useUserStore } from '@/stores'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import {
-  ArrowDown,
-  HotWater,
-  Menu,
-  HelpFilled,
-  List
-} from '@element-plus/icons-vue'
+import { ArrowDown, HotWater, Menu, HelpFilled, List } from '@element-plus/icons-vue'
 
 const loading = ref<boolean>(false)
 const userStore = useUserStore()
@@ -134,9 +128,7 @@ const handleCommand = async (path: string) => {
             <el-menu-item @click="goToLink('https:')">官方网站</el-menu-item>
             <el-menu-item @click="goToLink('https://')">软件中心</el-menu-item>
           </el-sub-menu>
-          <el-menu-item index="3" @click="goToLink('https://')"
-            >注册</el-menu-item
-          >
+          <el-menu-item index="3" @click="goToLink('https://')">注册</el-menu-item>
           <el-menu-item index="4" route="/about">帮助</el-menu-item>
 
           <!--    下拉信息中心-->
@@ -155,18 +147,10 @@ const handleCommand = async (path: string) => {
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item command="/default"
-                    >基本资料</el-dropdown-item
-                  >
-                  <el-dropdown-item command="/default"
-                    >头像设置</el-dropdown-item
-                  >
-                  <el-dropdown-item command="/default"
-                    >密码设置</el-dropdown-item
-                  >
-                  <el-dropdown-item command="/login" style="color: red"
-                    >退出登录</el-dropdown-item
-                  >
+                  <el-dropdown-item command="/default">基本资料</el-dropdown-item>
+                  <el-dropdown-item command="/default">头像设置</el-dropdown-item>
+                  <el-dropdown-item command="/default">密码设置</el-dropdown-item>
+                  <el-dropdown-item command="/login" style="color: red">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -180,9 +164,7 @@ const handleCommand = async (path: string) => {
       </el-main>
 
       <!--      底部footer-->
-      <el-footer height="50px">
-        GraphQL Manage System Created by @MyEMC.Ltd 2024-2028</el-footer
-      >
+      <el-footer height="50px"> GraphQL Manage System Created by @MyEMC.Ltd 2024-2028</el-footer>
     </el-container>
   </el-container>
 </template>

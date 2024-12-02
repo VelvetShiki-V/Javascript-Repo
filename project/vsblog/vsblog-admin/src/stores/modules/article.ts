@@ -9,8 +9,7 @@ export const useArticleStore = defineStore('article', () => {
   // 文章列表
   const pageArticles = ref<PageResultVO<ArticleAdminVO>>(pageResultVOInit())
   const getArticlesListAsync = async (form: ConditionDTO) => {
-    const pageResults: PageResultVO<ArticleAdminVO> =
-      await getFilteredArticles(form)
+    const pageResults: PageResultVO<ArticleAdminVO> = await getFilteredArticles(form)
     pageArticles.value.count = pageResults.count
     pageArticles.value.records = pageResults.records
   }

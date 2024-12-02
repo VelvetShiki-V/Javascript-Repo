@@ -25,7 +25,7 @@ module.exports = {
         // 单引号，无分号，数组后无逗号，防止/>独占一行，换行符无限制
         singleQuote: true,
         semi: false,
-        printWidth: 80,
+        printWidth: 100,
         bracketSameLine: true,
         trailingComma: 'none',
         endOfLine: 'auto'

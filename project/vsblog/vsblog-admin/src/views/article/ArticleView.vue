@@ -1,42 +1,60 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useArticleStore } from '@/stores'
-import { Edit, Delete, ArrowRight } from '@element-plus/icons-vue'
+import { Edit, Delete } from '@element-plus/icons-vue'
 import DataContainer from '@/components/DataContainer.vue'
 import DataSelector from '@/components/DataSelector.vue'
 import { Check, Close } from '@element-plus/icons-vue'
 import { ArticleAdminVO } from '@/types/vo/ArticleAdminVO'
-import {
-  ArticleTopFeaturedDTO,
-  articleTopFeaturedDTOInit
-} from '@/types/dto/ArticleTopFeaturedDTO'
-import {
-  ArticleFilterDTO,
-  articleFilterDTOInit
-} from '@/types/dto/ConditionDTO'
+import { ArticleTopFeaturedDTO, articleTopFeaturedDTOInit } from '@/types/dto/ArticleTopFeaturedDTO'
+import { ConditionDTO } from '@/types/dto/ConditionDTO'
+import { useTagStore } from '@/stores/modules/tag'
+import { useCategoryStore } from '@/stores/modules/category'
 
 // 响应式数据
 const dataLoading = ref<boolean>(true)
 const articleStore = useArticleStore()
+const tagStore = useTagStore()
+const categoryStore = useCategoryStore()
 const topFeaturedForm = ref<ArticleTopFeaturedDTO>(articleTopFeaturedDTOInit())
-const articleFilterForm = ref<ArticleFilterDTO>(articleFilterDTOInit())
+const filterForm = ref<ConditionDTO>({ isDelete: 0, current: 1, size: 10 } as ConditionDTO) // 部分值初始（存在undefined）
+
+// 计算
+const computedArticleList = computed(() =>
+  [...articleStore.pageArticles.records].sort((a, b) => b.id - a.id)
+)
 
 // 初始化
 const initialize = async () => {
-  // 页面加载即获取后台文章数据
-  await articleStore.getArticlesListAsync()
+  // 页面加载即获取后台数据
+  await articleStore.getArticlesListAsync(filterForm.value)
+  await tagStore.getAllTagsAsync(filterForm.value)
+  await categoryStore.getAllCategoriesAsync(filterForm.value)
   dataLoading.value = false
-  // 对文章按照浏览量排序
-  articleStore.articleData.records.sort((a, b) => b.id - a.id)
-  console.log('排序后: ', articleStore.articleData.records)
 }
 initialize()
 
 // 方法
 const handleCreateNode = () => {}
-const handleQuery = () => {
-  console.log('接收到过滤条件数据: ', articleFilterForm)
+
+// 筛选函数
+const handleQuery = async (form: ConditionDTO) => {
+  filterForm.value = { ...filterForm.value, ...form }
+  console.log('收到了条件表单: ', filterForm.value)
+  await articleStore.getArticlesListAsync(filterForm.value)
 }
+const handleReset = async (form: ConditionDTO) => {
+  filterForm.value = { ...form }
+  await articleStore.getArticlesListAsync(filterForm.value)
+}
+
+// 分页函数
+const handleChange = async () => {
+  console.log('条件表单: ', filterForm.value)
+  await articleStore.getArticlesListAsync(filterForm.value)
+}
+
+// 文章函数
 const handleEdit = (row: ArticleAdminVO) => {
   console.log(row)
 }
@@ -63,12 +81,16 @@ const handleTopFeaturedChanged = (row: ArticleTopFeaturedDTO) => {
 
     <!-- 匿名插槽主体 -->
     <!-- filter -->
-    <DataSelector @on-query="handleQuery" />
+    <DataSelector
+      :categories="categoryStore.pageCategories.records"
+      :tags="tagStore.pageTags.records"
+      @on-query="handleQuery"
+      @on-reset="handleReset" />
 
     <!-- table -->
     <el-table
       v-loading="dataLoading"
-      :data="articleStore.articleData.records"
+      :data="computedArticleList"
       stripe
       style="width: 100%"
       height="500"
@@ -90,16 +112,8 @@ const handleTopFeaturedChanged = (row: ArticleTopFeaturedDTO) => {
             fit="cover" />
         </template>
       </el-table-column>
-      <el-table-column
-        prop="articleTitle"
-        label="标题"
-        width="200"
-        align="center" />
-      <el-table-column
-        prop="categoryName"
-        label="分类"
-        width="200"
-        align="center" />
+      <el-table-column prop="articleTitle" label="标题" width="200" align="center" />
+      <el-table-column prop="categoryName" label="分类" width="200" align="center" />
       <el-table-column prop="tagDTOs" label="标签" width="170" align="center">
         <template #default="scope">
           <el-tag
@@ -115,22 +129,14 @@ const handleTopFeaturedChanged = (row: ArticleTopFeaturedDTO) => {
       <!-- Id, Ts, Properties, Children  -->
       <el-table-column label="其他信息" width="200" align="center">
         <template #default="scope">
-          <el-popover
-            effect="light"
-            trigger="hover"
-            placement="top"
-            width="auto">
+          <el-popover effect="light" trigger="hover" placement="top" width="auto">
             <template #default>
               <div style="color: #dd6161">文章类型: {{ scope.row.type }}</div>
-              <div style="color: #0ca1a1">
-                发布时间: {{ scope.row.createTime }}
-              </div>
+              <div style="color: #0ca1a1">发布时间: {{ scope.row.createTime }}</div>
               <div style="color: #ebb563">id: {{ scope.row.id }}</div>
             </template>
             <template #reference>
-              <el-tag
-                >浏览量: {{ scope.row.viewsCount || scope.row.id }}</el-tag
-              >
+              <el-tag>浏览量: {{ scope.row.viewsCount || scope.row.id }}</el-tag>
             </template>
           </el-popover>
         </template>
@@ -147,11 +153,7 @@ const handleTopFeaturedChanged = (row: ArticleTopFeaturedDTO) => {
             @change="handleTopFeaturedChanged(scope.row)" />
         </template>
       </el-table-column>
-      <el-table-column
-        prop="isFeatured"
-        label="推荐"
-        width="200"
-        align="center">
+      <el-table-column prop="isFeatured" label="推荐" width="200" align="center">
         <template #default="scope">
           <el-switch
             :model-value="scope.row.isFeatured === 1"
@@ -163,11 +165,7 @@ const handleTopFeaturedChanged = (row: ArticleTopFeaturedDTO) => {
         </template>
       </el-table-column>
       <!--        操作-->
-      <el-table-column
-        label="Operations"
-        align="center"
-        fixed="right"
-        min-width="170">
+      <el-table-column label="Operations" align="center" fixed="right" min-width="170">
         <template #default="scope">
           <el-tooltip content="编辑文章" placement="top">
             <el-button
@@ -179,16 +177,25 @@ const handleTopFeaturedChanged = (row: ArticleTopFeaturedDTO) => {
               @submit="handleSubmit" />
           </el-tooltip>
           <el-tooltip content="删除文章" placement="top">
-            <el-button
-              circle
-              :icon="Delete"
-              type="danger"
-              plain
-              @click="handleDelete(scope.row)" />
+            <el-button circle :icon="Delete" type="danger" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分页 -->
+    <div class="demo-pagination-block">
+      <el-pagination
+        v-model:current-page="filterForm.current"
+        v-model:page-size="filterForm.size"
+        :page-sizes="[5, 10, 15, 20]"
+        size="large"
+        :background="true"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="articleStore.pageArticles.count"
+        @size-change="handleChange"
+        @current-change="handleChange" />
+    </div>
   </DataContainer>
 </template>
 
