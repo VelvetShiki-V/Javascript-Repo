@@ -1,3 +1,4 @@
+import { ArticleTopFeaturedDTO } from '@/types/dto/ArticleTopFeaturedDTO'
 import { ConditionDTO } from '@/types/dto/ConditionDTO'
 import { ArticleAdminVO } from '@/types/vo/ArticleAdminVO'
 import { PageResultVO } from '@/types/vo/PageResultVO'
@@ -19,4 +20,10 @@ const getArticleById = async (id: number): Promise<ArticleAdminVO> => {
   return article
 }
 
-export { getFilteredArticles, getArticleById }
+// 修改推荐或置顶文章
+const updateTopFeaturedArticleById = async (form: ArticleTopFeaturedDTO): Promise<void> => {
+  console.log('修改推荐或文章置顶表单: ', form)
+  await request.post('/admin/articles/topFeatured', form)
+}
+
+export { getFilteredArticles, getArticleById, updateTopFeaturedArticleById }

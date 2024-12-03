@@ -125,16 +125,10 @@ const emit = defineEmits(['onSubmit'])
     <el-form ref="formRef" :model="formModel" :rules="rules">
       <!--      基本信息-->
       <el-form-item label="用户名: " label-width="100" prop="username" required>
-        <el-input
-          v-model="formModel.username"
-          name="username"
-          placeholder="新增用户名" />
+        <el-input v-model="formModel.username" name="username" placeholder="新增用户名" />
       </el-form-item>
       <el-form-item label="密码: " prop="password" label-width="100" required>
-        <el-input
-          v-model="formModel.password"
-          name="password"
-          placeholder="请填写密码" />
+        <el-input v-model="formModel.password" name="password" placeholder="请填写密码" />
       </el-form-item>
       <!--      多表查询表单-->
       <el-form-item label="分类: " label-width="100">
@@ -147,16 +141,10 @@ const emit = defineEmits(['onSubmit'])
         </el-select>
       </el-form-item>
       <el-form-item label-width="100" label="电话: " prop="tel">
-        <el-input
-          v-model="formModel.tel"
-          name="tel"
-          placeholder="必填电话信息" />
+        <el-input v-model="formModel.tel" name="tel" placeholder="必填电话信息" />
       </el-form-item>
       <el-form-item label-width="100" label="住址: ">
-        <el-input
-          v-model="formModel.addr"
-          name="addr"
-          placeholder="选填住址信息" />
+        <el-input v-model="formModel.addr" name="addr" placeholder="选填住址信息" />
       </el-form-item>
       <!--      图片文件上传-->
       <el-form-item label-width="100" label="头像: ">
@@ -171,18 +159,14 @@ const emit = defineEmits(['onSubmit'])
           <template #default>
             <div style="width: 300px; height: 100px">
               <el-image v-if="imgRef.url" :src="imgRef.url" />
-              <el-icon
-                v-else
-                style="height: 200px; border: 1px solid grey; width: 100%"
+              <el-icon v-else style="height: 200px; border: 1px solid grey; width: 100%"
                 ><Plus
               /></el-icon>
             </div>
           </template>
           <!--     文件提示说明文字-->
           <template #tip>
-            <div class="el-upload__tip text-red">
-              jpg/png files with a size less than 5Mb
-            </div>
+            <div class="el-upload__tip text-red">jpg/png files with a size less than 5Mb</div>
           </template>
         </el-upload>
       </el-form-item>
@@ -190,9 +174,7 @@ const emit = defineEmits(['onSubmit'])
 
     <!--    具名底部插槽-->
     <template #footer>
-      <el-button type="info" @click="upload.$el.querySelector('input').click()"
-        >选择图片</el-button
-      >
+      <el-button type="info" @click="upload.$el.querySelector('input').click()">选择图片</el-button>
       <el-button type="success" @click="uploadFile">上传图片</el-button>
       <el-button type="primary" @click="submitVerify">提交</el-button>
       <el-button @click="(isVisible = false)">取消</el-button>

@@ -8,8 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     DataContainer: typeof import('./src/components/DataContainer.vue')['default']
-    DataSelector: typeof import('./src/components/DataSelector.vue')['default']
-    DormDrawer: typeof import('./src/components/DormDrawer.vue')['default']
+    DataSelector: typeof import('./src/views/article/components/DataSelector.vue')['default']
+    DormDrawer: typeof import('./src/views/article/components/DormDrawer.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
@@ -44,6 +44,7 @@ declare module 'vue' {
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     FormDialog: typeof import('./src/components/FormDialog.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    PopupDialog: typeof import('./src/components/PopupDialog.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

@@ -7,8 +7,8 @@ export type ArticleTopFeaturedDTO = {
 
 export const articleTopFeaturedDTOInit = (): ArticleTopFeaturedDTO => {
   return {
-    id: 0,
-    isTop: 0,
-    isFeatured: 0
+    id: -1,
+    isTop: -1,
+    isFeatured: -1
   }
 }

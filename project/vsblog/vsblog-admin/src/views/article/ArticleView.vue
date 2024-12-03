@@ -1,28 +1,23 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useArticleStore } from '@/stores'
 import { Edit, Delete } from '@element-plus/icons-vue'
 import DataContainer from '@/components/DataContainer.vue'
-import DataSelector from '@/components/DataSelector.vue'
+import DataSelector from '@/views/article/components/DataSelector.vue'
 import { Check, Close } from '@element-plus/icons-vue'
 import { ArticleAdminVO } from '@/types/vo/ArticleAdminVO'
-import { ArticleTopFeaturedDTO, articleTopFeaturedDTOInit } from '@/types/dto/ArticleTopFeaturedDTO'
+import { ArticleTopFeaturedDTO } from '@/types/dto/ArticleTopFeaturedDTO'
 import { ConditionDTO } from '@/types/dto/ConditionDTO'
 import { useTagStore } from '@/stores/modules/tag'
 import { useCategoryStore } from '@/stores/modules/category'
+import { updateTopFeaturedArticleById } from '@/api/article'
 
 // 响应式数据
 const dataLoading = ref<boolean>(true)
 const articleStore = useArticleStore()
 const tagStore = useTagStore()
 const categoryStore = useCategoryStore()
-const topFeaturedForm = ref<ArticleTopFeaturedDTO>(articleTopFeaturedDTOInit())
 const filterForm = ref<ConditionDTO>({ isDelete: 0, current: 1, size: 10 } as ConditionDTO) // 部分值初始（存在undefined）
-
-// 计算
-const computedArticleList = computed(() =>
-  [...articleStore.pageArticles.records].sort((a, b) => b.id - a.id)
-)
 
 // 初始化
 const initialize = async () => {
@@ -64,8 +59,24 @@ const handleSubmit = (row: ArticleAdminVO) => {
 const handleDelete = (row: ArticleAdminVO) => {
   console.log(row)
 }
-const handleTopFeaturedChanged = (row: ArticleTopFeaturedDTO) => {
-  console.log(row)
+
+// 推荐或置顶开关
+const handleTopFeaturedChanged = async (row: ArticleAdminVO, type: number) => {
+  const topFeaturedForm = ref<ArticleTopFeaturedDTO>({
+    id: row.id,
+    isFeatured: row.isFeatured,
+    isTop: row.isTop
+  })
+  if (type === 1) topFeaturedForm.value.isFeatured = row.isFeatured === 1 ? 0 : 1
+  else if (type === 2) topFeaturedForm.value.isTop = row.isTop === 1 ? 0 : 1
+  try {
+    // console.log('推荐置顶表单: ', topFeaturedForm.value)
+    await updateTopFeaturedArticleById(topFeaturedForm.value)
+  } catch {
+    ElMessage.error('推荐或置顶文章失败')
+  }
+  // 刷新页面
+  await articleStore.getArticlesListAsync(filterForm.value)
 }
 </script>
 
@@ -90,7 +101,7 @@ const handleTopFeaturedChanged = (row: ArticleTopFeaturedDTO) => {
     <!-- table -->
     <el-table
       v-loading="dataLoading"
-      :data="computedArticleList"
+      :data="articleStore.pageArticles.records"
       stripe
       style="width: 100%"
       height="500"
@@ -150,7 +161,7 @@ const handleTopFeaturedChanged = (row: ArticleTopFeaturedDTO) => {
             inline-prompt
             :active-icon="Check"
             :inactive-icon="Close"
-            @change="handleTopFeaturedChanged(scope.row)" />
+            @change="handleTopFeaturedChanged(scope.row, 2)" />
         </template>
       </el-table-column>
       <el-table-column prop="isFeatured" label="推荐" width="200" align="center">
@@ -161,7 +172,8 @@ const handleTopFeaturedChanged = (row: ArticleTopFeaturedDTO) => {
             style="margin-left: 24px"
             inline-prompt
             :active-icon="Check"
-            :inactive-icon="Close" />
+            :inactive-icon="Close"
+            @change="handleTopFeaturedChanged(scope.row, 1)" />
         </template>
       </el-table-column>
       <!--        操作-->
@@ -184,19 +196,22 @@ const handleTopFeaturedChanged = (row: ArticleTopFeaturedDTO) => {
     </el-table>
 
     <!-- 分页 -->
-    <div class="demo-pagination-block">
-      <el-pagination
-        v-model:current-page="filterForm.current"
-        v-model:page-size="filterForm.size"
-        :page-sizes="[5, 10, 15, 20]"
-        size="large"
-        :background="true"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="articleStore.pageArticles.count"
-        @size-change="handleChange"
-        @current-change="handleChange" />
-    </div>
+    <el-pagination
+      v-model:current-page="filterForm.current"
+      v-model:page-size="filterForm.size"
+      :hide-on-single-page="false"
+      :page-sizes="[5, 10, 15, 20]"
+      size="large"
+      :background="true"
+      :disabled="false"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="articleStore.pageArticles.count"
+      @size-change="handleChange"
+      @current-change="handleChange" />
   </DataContainer>
+  <!--  抽屉-->
+  <FormDrawer ref="userFormRef" :list="userStore.userCategories" @on-submit="handleSubmit">
+  </FormDrawer>
 </template>
 
 <style scoped>
