@@ -11,8 +11,12 @@ import { ConditionDTO } from '@/types/dto/ConditionDTO'
 import { useTagStore } from '@/stores/modules/tag'
 import { useCategoryStore } from '@/stores/modules/category'
 import { updateTopFeaturedArticleById } from '@/api/article'
+import { EventType } from '@/enums/DataEvent'
+import { ArticleAdminViewVO } from '@/types/vo/ArticleAdminViewVO'
+import FormDrawer from './components/FormDrawer.vue'
 
 // 响应式数据
+const articleDrawerRef = ref()
 const dataLoading = ref<boolean>(true)
 const articleStore = useArticleStore()
 const tagStore = useTagStore()
@@ -50,12 +54,26 @@ const handleChange = async () => {
 }
 
 // 文章函数
-const handleEdit = (row: ArticleAdminVO) => {
-  console.log(row)
+// 新增文章
+const handleCreate = () => {
+  articleDrawerRef.value.drawerShow(EventType.CREATE_EVENT, {} as ArticleAdminViewVO)
 }
+
+// 编辑文章
+const handleEdit = async (row: ArticleAdminVO) => {
+  try {
+    await articleStore.getArticleByIdAsync(row.id)
+  } catch {
+    ElMessage('根据Id获取文章失败')
+  }
+  articleDrawerRef.value.drawerShow(EventType.UPDATE_EVENT, articleStore.idArticle)
+}
+
+// 收到文章发布按钮事件时触发，将数据上传至服务器
 const handleSubmit = (row: ArticleAdminVO) => {
   console.log(row)
 }
+
 const handleDelete = (row: ArticleAdminVO) => {
   console.log(row)
 }
@@ -210,7 +228,11 @@ const handleTopFeaturedChanged = async (row: ArticleAdminVO, type: number) => {
       @current-change="handleChange" />
   </DataContainer>
   <!--  抽屉-->
-  <FormDrawer ref="userFormRef" :list="userStore.userCategories" @on-submit="handleSubmit">
+  <FormDrawer
+    ref="articleDrawerRef"
+    :tags="tagStore.pageTags.records"
+    :categories="categoryStore.pageCategories.records"
+    @on-submit="handleSubmit">
   </FormDrawer>
 </template>
 

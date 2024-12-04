@@ -1,5 +1,6 @@
 import { ArticleTopFeaturedDTO } from '@/types/dto/ArticleTopFeaturedDTO'
 import { ConditionDTO } from '@/types/dto/ConditionDTO'
+import { ArticleAdminViewVO } from '@/types/vo/ArticleAdminViewVO'
 import { ArticleAdminVO } from '@/types/vo/ArticleAdminVO'
 import { PageResultVO } from '@/types/vo/PageResultVO'
 import request from '@/utils/request'
@@ -14,9 +15,9 @@ const getFilteredArticles = async (form: ConditionDTO): Promise<PageResultVO<Art
 }
 
 // 根据id获取后台文章
-const getArticleById = async (id: number): Promise<ArticleAdminVO> => {
-  const article: ArticleAdminVO = await request.get(`/${id}`)
-  // console.log('获取到id为' + id + '的文章数据: ', article)
+const getArticleById = async (id: number): Promise<ArticleAdminViewVO> => {
+  const article: ArticleAdminViewVO = await request.get(`/admin/articles/${id}`)
+  console.log('获取到id为' + id + '的文章数据: ', article)
   return article
 }
 

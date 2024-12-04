@@ -6,6 +6,8 @@ import { Quasar } from 'quasar'
 import quasarLang from 'quasar/lang/zh-CN'
 import router from './router'
 import pinia from '@/stores/index'
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 // 全局样式
 import '@/styles/global.css'
 // Import icon libraries
@@ -23,6 +25,7 @@ const app = createApp(App)
 app.use(createPinia().use(persist))
 app.use(router)
 app.use(pinia)
+app.use(mavonEditor)
 app.use(Quasar, {
   plugins: {}, // import Quasar plugins and add here
   lang: quasarLang

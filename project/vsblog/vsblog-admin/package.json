@@ -14,6 +14,7 @@
     "axios": "^1.7.8",
     "element-plus": "^2.8.8",
     "eslint": "^8.56.0",
+    "mavon-editor": "^3.0.1",
     "pinia": "^2.2.6",
     "pinia-plugin-persistedstate": "^4.1.3",
     "quasar": "^2.17.4",
