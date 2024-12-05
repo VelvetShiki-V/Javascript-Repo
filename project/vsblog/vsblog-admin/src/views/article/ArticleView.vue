@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { provide, ref } from 'vue'
 import { useArticleStore } from '@/stores'
 import { Edit, Delete } from '@element-plus/icons-vue'
 import DataContainer from '@/components/DataContainer.vue'
@@ -10,10 +10,11 @@ import { ArticleTopFeaturedDTO } from '@/types/dto/ArticleTopFeaturedDTO'
 import { ConditionDTO } from '@/types/dto/ConditionDTO'
 import { useTagStore } from '@/stores/modules/tag'
 import { useCategoryStore } from '@/stores/modules/category'
-import { updateTopFeaturedArticleById } from '@/api/article'
+import { saveOrUpdateArticle, updateTopFeaturedArticleById } from '@/api/article'
 import { EventType } from '@/enums/DataEvent'
 import { ArticleAdminViewVO } from '@/types/vo/ArticleAdminViewVO'
 import FormDrawer from './components/FormDrawer.vue'
+import { ArticleDetailDTO } from '@/types/dto/ArticleDetailDTO'
 
 // 响应式数据
 const articleDrawerRef = ref()
@@ -33,9 +34,12 @@ const initialize = async () => {
 }
 initialize()
 
+// 子孙组件数据提供
+provide('tags', tagStore.pageTags.records)
+provide('categories', categoryStore.pageCategories.records)
+
 // 方法
 const handleCreateNode = () => {}
-
 // 筛选函数
 const handleQuery = async (form: ConditionDTO) => {
   filterForm.value = { ...filterForm.value, ...form }
@@ -46,13 +50,11 @@ const handleReset = async (form: ConditionDTO) => {
   filterForm.value = { ...form }
   await articleStore.getArticlesListAsync(filterForm.value)
 }
-
 // 分页函数
 const handleChange = async () => {
   console.log('条件表单: ', filterForm.value)
   await articleStore.getArticlesListAsync(filterForm.value)
 }
-
 // 文章函数
 // 新增文章
 const handleCreate = () => {
@@ -70,9 +72,10 @@ const handleEdit = async (row: ArticleAdminVO) => {
 }
 
 // 收到文章发布按钮事件时触发，将数据上传至服务器
-const handleSubmit = (row: ArticleAdminVO) => {
-  console.log(row)
+const handleSubmit = async (article: ArticleDetailDTO) => {
+  await saveOrUpdateArticle(article)
 }
+provide('handleSubmit', handleSubmit)
 
 const handleDelete = (row: ArticleAdminVO) => {
   console.log(row)
@@ -198,13 +201,7 @@ const handleTopFeaturedChanged = async (row: ArticleAdminVO, type: number) => {
       <el-table-column label="Operations" align="center" fixed="right" min-width="170">
         <template #default="scope">
           <el-tooltip content="编辑文章" placement="top">
-            <el-button
-              circle
-              :icon="Edit"
-              type="warning"
-              plain
-              @click="handleEdit(scope.row)"
-              @submit="handleSubmit" />
+            <el-button circle :icon="Edit" type="warning" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
           <el-tooltip content="删除文章" placement="top">
             <el-button circle :icon="Delete" type="danger" plain @click="handleDelete(scope.row)" />
@@ -228,12 +225,7 @@ const handleTopFeaturedChanged = async (row: ArticleAdminVO, type: number) => {
       @current-change="handleChange" />
   </DataContainer>
   <!--  抽屉-->
-  <FormDrawer
-    ref="articleDrawerRef"
-    :tags="tagStore.pageTags.records"
-    :categories="categoryStore.pageCategories.records"
-    @on-submit="handleSubmit">
-  </FormDrawer>
+  <FormDrawer ref="articleDrawerRef"> </FormDrawer>
 </template>
 
 <style scoped>

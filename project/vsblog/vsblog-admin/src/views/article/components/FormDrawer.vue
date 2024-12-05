@@ -3,10 +3,10 @@ import { ref } from 'vue'
 import { ArticleAdminViewVO } from '@/types/vo/ArticleAdminViewVO'
 import { ArticleDetailDTO } from '@/types/dto/ArticleDetailDTO'
 import { EventType } from '@/enums/DataEvent'
-import { TagVO } from '@/types/vo/TagVO'
-import { CategoryVO } from '@/types/vo/CategoryVO'
+import UploadDialog from './UploadDialog.vue'
 
 // 组件实例和数据初始化
+const uploadDialog = ref()
 const eventRef = ref(0)
 const isVisible = ref(false)
 const title = ref('')
@@ -15,18 +15,6 @@ const articleDetailForm = ref<ArticleDetailDTO>({} as ArticleDetailDTO)
 const rules = {
   articleTitle: [{ required: true, message: '标题不能为空', trigger: 'blur' }]
 }
-
-// 接收数据
-defineProps({
-  tags: {
-    type: Array<TagVO>,
-    required: true
-  },
-  categories: {
-    type: Array<CategoryVO>,
-    required: true
-  }
-})
 
 // 控制抽屉显示隐藏
 const drawerShow = (flag: number, row: ArticleAdminViewVO) => {
@@ -39,16 +27,26 @@ const drawerShow = (flag: number, row: ArticleAdminViewVO) => {
   isVisible.value = true
 }
 
-// 保存草稿
+// 保存草稿按钮触发弹窗
 const saveDraft = () => {}
-// 上传或更新文章
-const saveOrUpdate = () => {}
 
-// 对外暴露方法控制抽屉显示隐藏
+// 上传文章按钮触发弹窗
+const saveOrUpdate = () => {
+  uploadDialog.value.dialogShow(articleDetailForm.value)
+}
+
+// 弹窗点击确认后向父组件传输数据
+const onSubmit = () => {
+  emit('onSubmit', articleDetailForm.value)
+}
+
+// 向父组件发送信号
+const emit = defineEmits(['onSubmit'])
+
+// 父组件暴露方法
 defineExpose({
   drawerShow
 })
-const emit = defineEmits(['onSubmit'])
 </script>
 
 <template>
@@ -79,12 +77,7 @@ const emit = defineEmits(['onSubmit'])
         style="max-height: 100%" />
     </el-form>
 
-    <!--    具名底部插槽-->
-    <!-- <template #footer>
-      <el-button type="success" @click="saveDraft">保存草稿</el-button>
-      <el-button type="primary" @click="saveOrUpdate">发布文章</el-button>
-      <el-button @click="(isVisible = false)">取消</el-button>
-    </template> -->
+    <UploadDialog ref="uploadDialog" @submit="onSubmit" />
   </el-drawer>
 </template>
 
@@ -104,7 +97,4 @@ const emit = defineEmits(['onSubmit'])
 .flex-grow {
   flex-grow: 1;
 }
-/* .mavon-editor {
-  height: calc(100vh - 260px)
-} */
 </style>

@@ -7,7 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    ArticlePopupDialog: typeof import('./src/components/ArticlePopupDialog.vue')['default']
+    ArticlePopupDialog: typeof import('./src/views/article/components/UploadDialog.vue')['default']
     DataContainer: typeof import('./src/components/DataContainer.vue')['default']
     DataSelector: typeof import('./src/views/article/components/DataSelector.vue')['default']
     DormDrawer: typeof import('./src/views/article/components/DormDrawer.vue')['default']
@@ -18,6 +18,7 @@ declare module 'vue' {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElContainer: typeof import('element-plus/es')['ElContainer']
+    ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
@@ -48,7 +49,7 @@ declare module 'vue' {
     FormDialog: typeof import('./src/components/FormDialog.vue')['default']
     FormDrawer: typeof import('./src/components/FormDrawer.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
-    PopupDialog: typeof import('./src/components/ArticlePopupDialog.vue')['default']
+    PopupDialog: typeof import('./src/views/article/components/UploadDialog.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
