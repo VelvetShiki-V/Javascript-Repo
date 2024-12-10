@@ -55,7 +55,7 @@ const handleChange = async () => {
   console.log('条件表单: ', filterForm.value)
   await articleStore.getArticlesListAsync(filterForm.value)
 }
-// 文章函数
+
 // 新增文章
 const handleCreate = () => {
   articleDrawerRef.value.drawerShow(EventType.CREATE_EVENT, {} as ArticleAdminViewVO)
@@ -71,9 +71,12 @@ const handleEdit = async (row: ArticleAdminVO) => {
   articleDrawerRef.value.drawerShow(EventType.UPDATE_EVENT, articleStore.idArticle)
 }
 
-// 收到文章发布按钮事件时触发，将数据上传至服务器
+// 文章发布
 const handleSubmit = async (article: ArticleDetailDTO) => {
   await saveOrUpdateArticle(article)
+  console.log('待更新文章表单: ', article)
+  // 刷新页面
+  await articleStore.getArticlesListAsync(filterForm.value)
 }
 provide('handleSubmit', handleSubmit)
 
@@ -91,7 +94,6 @@ const handleTopFeaturedChanged = async (row: ArticleAdminVO, type: number) => {
   if (type === 1) topFeaturedForm.value.isFeatured = row.isFeatured === 1 ? 0 : 1
   else if (type === 2) topFeaturedForm.value.isTop = row.isTop === 1 ? 0 : 1
   try {
-    // console.log('推荐置顶表单: ', topFeaturedForm.value)
     await updateTopFeaturedArticleById(topFeaturedForm.value)
   } catch {
     ElMessage.error('推荐或置顶文章失败')
@@ -105,10 +107,10 @@ const handleTopFeaturedChanged = async (row: ArticleAdminVO, type: number) => {
   <DataContainer title="ArticleView">
     <!-- 具名插槽头部 -->
     <template #operation>
-      <el-button type="primary" @click="handleCreateNode">创建文章</el-button>
-      <el-button type="success" @click="handleCreateNode">批量导入</el-button>
-      <el-button type="warning" @click="handleCreateNode">批量导出</el-button>
-      <el-button type="danger" @click="handleCreateNode">批量删除</el-button>
+      <el-button type="primary" @click="handleCreate">创建文章</el-button>
+      <el-button type="success" @click="handleCreate">批量导入</el-button>
+      <el-button type="warning" @click="handleCreate">批量导出</el-button>
+      <el-button type="danger" @click="handleCreate">批量删除</el-button>
     </template>
 
     <!-- 匿名插槽主体 -->

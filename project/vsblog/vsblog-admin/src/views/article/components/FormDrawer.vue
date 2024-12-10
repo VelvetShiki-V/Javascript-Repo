@@ -18,9 +18,9 @@ const rules = {
 
 // 控制抽屉显示隐藏
 const drawerShow = (flag: number, row: ArticleAdminViewVO) => {
-  if (flag === EventType.CREATE_EVENT) title.value = '数据新增'
+  if (flag === EventType.CREATE_EVENT) title.value = '新增文章'
   else if (flag === EventType.UPDATE_EVENT) {
-    title.value = '数据更新'
+    title.value = '更新文章'
   }
   eventRef.value = flag // 识别表单为新增或更新事件
   articleDetailForm.value = { ...row } // 可能存在问题
@@ -37,11 +37,8 @@ const saveOrUpdate = () => {
 
 // 弹窗点击确认后向父组件传输数据
 const onSubmit = () => {
-  emit('onSubmit', articleDetailForm.value)
+  isVisible.value = false
 }
-
-// 向父组件发送信号
-const emit = defineEmits(['onSubmit'])
 
 // 父组件暴露方法
 defineExpose({

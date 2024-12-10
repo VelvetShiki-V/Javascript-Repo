@@ -3,7 +3,7 @@ import { ArticleDetailDTO } from '@/types/dto/ArticleDetailDTO'
 import { ArticleAdminViewVO } from '@/types/vo/ArticleAdminViewVO'
 import { CategoryVO } from '@/types/vo/CategoryVO'
 import { TagVO } from '@/types/vo/TagVO'
-import { inject, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { Check, Close, Plus } from '@element-plus/icons-vue'
 import { ImageObject } from '@/types/dto/ImageObject'
 import { genFileId, UploadFile, UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
@@ -22,6 +22,44 @@ const tags: Array<TagVO> | undefined = inject('tags')
 const categories: Array<CategoryVO> | undefined = inject('categories')
 const submitArticle = inject('handleSubmit') as (article: ArticleDetailDTO) => void
 
+// 文章类型显示
+const computedTypeName = computed(() => {
+  switch (articlePropertiesForm.value.type) {
+    case 1:
+      return '原创'
+    case 2:
+      return '转载'
+    case 3:
+      return '翻译'
+    default:
+      return ''
+  }
+})
+
+// 文章状态显示
+const computedStatusName = computed(() => {
+  switch (articlePropertiesForm.value.status) {
+    case 1:
+      return '公开'
+    case 2:
+      return '私密'
+    case 3:
+      return '草稿'
+    default:
+      return ''
+  }
+})
+
+// 文章类型更新
+const handleTypeChange = (typeId: string) => {
+  articlePropertiesForm.value.type = Number(typeId)
+}
+
+// 文章状态更新
+const handleStatusChange = (statusId: string) => {
+  articlePropertiesForm.value.status = Number(statusId)
+}
+
 // 控制弹窗显示
 const dialogShow = (row: ArticleDetailDTO) => {
   articlePropertiesForm.value = { ...row }
@@ -30,16 +68,17 @@ const dialogShow = (row: ArticleDetailDTO) => {
 
 // 文章表单提交
 const handleSubmit = async () => {
-  // 检查图片是否已上传
-  if (!isUploaded.value) {
-    ElMessage.error('请先上传图片!')
-    return
-  }
-  // TODO: tagNames数组处理
-  articlePropertiesForm.value.tagNames = []
-  articlePropertiesForm.value.tagNames.push('算法')
-  submitArticle(articlePropertiesForm.value)
-  isVisible.value = false
+  ElMessageBox.confirm('请确认文章封面已经上传', 'Warning', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(() => {
+      submitArticle(articlePropertiesForm.value)
+      isVisible.value = false
+      emit('submit')
+    })
+    .catch(() => {})
 }
 
 // 图片上传检查
@@ -64,17 +103,6 @@ const handleChange = (file: UploadFile) => {
   isUploaded.value = false
 }
 
-// 图片预览
-const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
-  imgRef.value.url = uploadFile.url!
-  isVisible.value = true
-}
-
-// 图片移除
-const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
-  console.log(uploadFile, uploadFiles)
-}
-
 // 图片自动替换
 const handleExceed: UploadProps['onExceed'] = (files) => {
   upload.value!.clearFiles()
@@ -84,7 +112,6 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
 }
 
 // 上传图片至服务器
-// 单独的选择文件按钮可以让button绑定upload的点击事件: upload.$el.querySelector('input').click()，用于图片浏览
 const handleUploadImage = async () => {
   const formData = new FormData()
   formData.append('file', imgRef.value.file as Blob)
@@ -103,12 +130,19 @@ defineExpose({
   dialogShow
 })
 
+// 打开窗体将图片渲染
+const handleOpenUpload = () => {
+  imgRef.value.url = articlePropertiesForm.value.articleCover
+  // console.log('文章修改表单: ', articlePropertiesForm.value)
+}
+
+// 首次创建时引入
 console.log('接收到父数据categories: ', categories)
 console.log('接收到父数据tags: ', tags)
 </script>
 
 <template>
-  <el-dialog v-model="isVisible" title="发布文章" width="800" center>
+  <el-dialog v-model="isVisible" title="发布文章" width="800" center @open="handleOpenUpload">
     <!--    内容主体-->
     <el-form :model="articlePropertiesForm">
       <el-form-item label="文章分类" label-width="200px" required>
@@ -126,26 +160,63 @@ console.log('接收到父数据tags: ', tags)
         </el-select>
       </el-form-item>
       <el-form-item label="文章标签" label-width="200px" required>
+        <!-- <el-input-tag v-model="articlePropertiesForm.tagNames" /> -->
         <el-select
           v-model="articlePropertiesForm.tagNames"
-          style="width: 200px"
+          style="width: 300px"
+          multiple
+          :multiple-limit="3"
           clearable
           filterable
-          placeholder="Select">
+          allow-create
+          tag-type="success"
+          tag-effect="dark"
+          :empty-values="[]"
+          default-first-option
+          placeholder="请选择文章标签">
           <el-option v-for="tag in tags" :key="tag.id" :value="tag.tagName" :label="tag.tagName" />
         </el-select>
       </el-form-item>
       <el-form-item label="文章类型" label-width="200px" required>
         <el-select
-          v-model="articlePropertiesForm.type"
-          style="width: 200px"
-          clearable
-          filterable
-          placeholder="Select">
+          :model-value="computedTypeName"
+          style="width: 300px"
+          placeholder="请选择文章类型"
+          @change="handleTypeChange">
           <el-option label="原创" value="1" />
           <el-option label="转载" value="2" />
           <el-option label="翻译" value="3" />
         </el-select>
+      </el-form-item>
+      <!-- 转载url -->
+      <el-form-item
+        v-if="articlePropertiesForm.type === 2 || articlePropertiesForm.type === 3"
+        label="原文网址"
+        label-width="200px">
+        <el-input
+          v-model="articlePropertiesForm.originalUrl"
+          placeholder="请输入原文网址"
+          style="width: 300px"
+          required />
+      </el-form-item>
+      <el-form-item label="文章状态" label-width="200px" required>
+        <el-select
+          :model-value="computedStatusName"
+          style="width: 300px"
+          placeholder="请选择文章状态"
+          @change="handleStatusChange">
+          <el-option label="公开" value="1" />
+          <el-option label="私密" value="2" />
+          <el-option label="草稿" value="3" />
+        </el-select>
+      </el-form-item>
+      <!-- password -->
+      <el-form-item v-if="articlePropertiesForm.status === 2" label="文章密码" label-width="200px">
+        <el-input
+          v-model="articlePropertiesForm.password"
+          placeholder="请输入文章密码"
+          style="width: 300px"
+          required />
       </el-form-item>
       <el-form-item label="封面" label-width="200px">
         <!--        action为默认上传至服务器，可通过URL.createObjectURL创建本地预览，再统一提交-->
@@ -155,9 +226,7 @@ console.log('接收到父数据tags: ', tags)
           :show-file-list="false"
           :auto-upload="false"
           :on-change="handleChange"
-          :on-exceed="handleExceed"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove">
+          :on-exceed="handleExceed">
           <!--      文件自定义默认内容-->
           <template #default>
             <div style="width: 300px; height: 300px">
@@ -183,6 +252,8 @@ console.log('接收到父数据tags: ', tags)
       <el-form-item label="置顶" label-width="200px">
         <el-switch
           v-model="articlePropertiesForm.isTop"
+          :active-value="1"
+          :inactive-value="0"
           class="mt-2"
           style="margin-left: 24px"
           inline-prompt
@@ -192,6 +263,8 @@ console.log('接收到父数据tags: ', tags)
       <el-form-item label="推荐" label-width="200px">
         <el-switch
           v-model="articlePropertiesForm.isFeatured"
+          :active-value="1"
+          :inactive-value="0"
           class="mt-2"
           style="margin-left: 24px"
           inline-prompt

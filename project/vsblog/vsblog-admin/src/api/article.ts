@@ -1,7 +1,6 @@
 import { ArticleDetailDTO } from '@/types/dto/ArticleDetailDTO'
 import { ArticleTopFeaturedDTO } from '@/types/dto/ArticleTopFeaturedDTO'
 import { ConditionDTO } from '@/types/dto/ConditionDTO'
-import { ImageObject } from '@/types/dto/ImageObject'
 import { ArticleAdminViewVO } from '@/types/vo/ArticleAdminViewVO'
 import { ArticleAdminVO } from '@/types/vo/ArticleAdminVO'
 import { PageResultVO } from '@/types/vo/PageResultVO'
