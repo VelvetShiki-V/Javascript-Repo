@@ -15,8 +15,12 @@ import { EventType } from '@/enums/DataEvent'
 import { ArticleAdminViewVO } from '@/types/vo/ArticleAdminViewVO'
 import FormDrawer from './components/FormDrawer.vue'
 import { ArticleDetailDTO } from '@/types/dto/ArticleDetailDTO'
+import { UploadFile, UploadInstance } from 'element-plus'
+import { ArticleObject } from '@/types/dto/ArticleObject'
 
 // 响应式数据
+const uploadRef = ref<UploadInstance>()
+const articleImportRef = ref<ArticleObject>({} as ArticleObject)
 const articleDrawerRef = ref()
 const dataLoading = ref<boolean>(true)
 const articleStore = useArticleStore()
@@ -38,8 +42,6 @@ initialize()
 provide('tags', tagStore.pageTags.records)
 provide('categories', categoryStore.pageCategories.records)
 
-// 方法
-const handleCreateNode = () => {}
 // 筛选函数
 const handleQuery = async (form: ConditionDTO) => {
   filterForm.value = { ...filterForm.value, ...form }
@@ -56,6 +58,71 @@ const handleChange = async () => {
   await articleStore.getArticlesListAsync(filterForm.value)
 }
 
+// 导入文章
+const handleImport = async (file: UploadFile) => {
+  // 分别获取文件名称作为title, 并获取文件内容作为content
+  const fileName = file.name
+  const fileType = fileName.substring(fileName.lastIndexOf('.') + 1)
+  articleImportRef.value.title = fileName.substring(0, fileName.lastIndexOf('.'))
+  // 判断文件是否为文本类型
+  if (fileType !== 'md' && fileType !== 'txt' && fileType !== 'html') {
+    ElMessage.error('导入文章类型不支持! 导入类型为: ' + fileType)
+    return
+  }
+  try {
+    articleImportRef.value.content = await file!.raw!.text()
+  } catch (error) {
+    ElMessage.error('文件内容导入失败' + error)
+    return
+  }
+  // 解析图片并自动上传(需要是绝对路径)
+  processArticle()
+  // 传入抽屉
+  ElMessage.success('文件导入成功')
+  articleDrawerRef.value.drawerShow(EventType.CREATE_EVENT, {
+    articleTitle: articleImportRef.value.title,
+    articleContent: articleImportRef.value.content
+  } as ArticleAdminViewVO)
+}
+
+// 文件图片预处理
+const processArticle = async () => {
+  // 匹配 <img> 标签
+  const imgTagRegex = /<img[^>]*src=["']([^"']+)["'][^>]*>/g
+  // 匹配 Markdown 格式图片
+  const markdownImgRegex = /!\[.*?\]\((.*?)\)/g
+
+  // 将本地图片存储为集合
+  const localImages = new Array<string>()
+  let image
+  while ((image = imgTagRegex.exec(articleImportRef.value.content)) !== null) {
+    // console.log('匹配到<img>本地路径: ', image)
+    localImages.push(image[1])
+  }
+  while ((image = markdownImgRegex.exec(articleImportRef.value.content)) !== null) {
+    // console.log('匹配到![]本地路径: ', image)
+    localImages.push(image[1])
+  }
+  console.log('获取到所有本地图片路径: ', localImages)
+  for (const imgPath of localImages) {
+    // 判断图片是否为绝对路径(url网址或本地文件绝对路径)
+    // TODO: 封装File并读取，成功则转存，否则显示默认图片
+    // ...
+    // const formData = new FormData()
+    // formData.append('file', imgPath as Blob)
+    // imgRef.value.url = await uploadArticleImage(formData)
+    // console.log('接收到上传图片url: ', imgRef.value.url)
+    // articlePropertiesForm.value.articleCover = imgRef.value.url
+    // ElMessage.success('上传成功')
+  }
+}
+
+// 批量导出
+const handleBatchExport = () => {}
+
+// 批量删除
+const handleBatchDelete = () => {}
+
 // 新增文章
 const handleCreate = () => {
   articleDrawerRef.value.drawerShow(EventType.CREATE_EVENT, {} as ArticleAdminViewVO)
@@ -65,8 +132,8 @@ const handleCreate = () => {
 const handleEdit = async (row: ArticleAdminVO) => {
   try {
     await articleStore.getArticleByIdAsync(row.id)
-  } catch {
-    ElMessage('根据Id获取文章失败')
+  } catch (e) {
+    ElMessage('根据Id获取文章失败' + e)
   }
   articleDrawerRef.value.drawerShow(EventType.UPDATE_EVENT, articleStore.idArticle)
 }
@@ -108,9 +175,15 @@ const handleTopFeaturedChanged = async (row: ArticleAdminVO, type: number) => {
     <!-- 具名插槽头部 -->
     <template #operation>
       <el-button type="primary" @click="handleCreate">创建文章</el-button>
-      <el-button type="success" @click="handleCreate">批量导入</el-button>
-      <el-button type="warning" @click="handleCreate">批量导出</el-button>
-      <el-button type="danger" @click="handleCreate">批量删除</el-button>
+      <el-upload
+        ref="uploadRef"
+        :on-change="handleImport"
+        :show-file-list="false"
+        :auto-upload="false">
+        <el-button type="success">导入文章</el-button>
+      </el-upload>
+      <el-button type="warning" @click="handleBatchExport">批量导出</el-button>
+      <el-button type="danger" @click="handleBatchDelete">批量删除</el-button>
     </template>
 
     <!-- 匿名插槽主体 -->

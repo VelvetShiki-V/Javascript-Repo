@@ -4,6 +4,7 @@ import { ArticleAdminViewVO } from '@/types/vo/ArticleAdminViewVO'
 import { ArticleDetailDTO } from '@/types/dto/ArticleDetailDTO'
 import { EventType } from '@/enums/DataEvent'
 import UploadDialog from './UploadDialog.vue'
+import { uploadArticleImage } from '@/api/article'
 
 // 组件实例和数据初始化
 const uploadDialog = ref()
@@ -40,6 +41,23 @@ const onSubmit = () => {
   isVisible.value = false
 }
 
+// editor图片自动上传
+const imageAttach = async (pos: number, $imgFile: File) => {
+  console.log('接收到图片信息: ', pos, $imgFile)
+  const formData = new FormData()
+  formData.append('file', $imgFile)
+  const url: string = await uploadArticleImage(formData)
+  console.log('接收到上传图片url: ', url)
+  // url替换
+  articleDetailFormRef.value.$img2Url(pos, url)
+  ElMessage.success('上传成功')
+}
+
+// 图片粘贴
+const handlePasteImage = async (event: any) => {
+  console.log(event.clipboardData.items)
+}
+
 // 父组件暴露方法
 defineExpose({
   drawerShow
@@ -69,9 +87,11 @@ defineExpose({
 
       <!-- 富文本MD编辑器 -->
       <mavon-editor
-        :ref="articleDetailFormRef"
+        ref="articleDetailFormRef"
         v-model="articleDetailForm.articleContent"
-        style="max-height: 100%" />
+        style="max-height: 100%"
+        @paste="handlePasteImage"
+        @img-add="imageAttach" />
     </el-form>
 
     <UploadDialog ref="uploadDialog" @submit="onSubmit" />
