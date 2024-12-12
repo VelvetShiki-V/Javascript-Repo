@@ -30,7 +30,7 @@ const updateTopFeaturedArticleById = async (form: ArticleTopFeaturedDTO): Promis
 
 // 上传文章图片(multipart形式)
 const uploadArticleImage = async (form: FormData): Promise<string> => {
-  console.log('待上传文章图片: ', form)
+  // console.log('待上传文章图片: ', form)
   return await request.post('/admin/articles/images', form, {
     headers: { 'Content-Type': 'multipart/form-data' }
   })

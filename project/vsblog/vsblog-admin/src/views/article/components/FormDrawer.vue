@@ -7,6 +7,7 @@ import UploadDialog from './UploadDialog.vue'
 import { uploadArticleImage } from '@/api/article'
 
 // 组件实例和数据初始化
+const urlsMap = ref<Map<string, string>>(new Map())
 const uploadDialog = ref()
 const eventRef = ref(0)
 const isVisible = ref(false)
@@ -15,6 +16,73 @@ const articleDetailFormRef = ref()
 const articleDetailForm = ref<ArticleDetailDTO>({} as ArticleDetailDTO)
 const rules = {
   articleTitle: [{ required: true, message: '标题不能为空', trigger: 'blur' }]
+}
+
+// 文件图片预处理
+const uploadImagesManually = async () => {
+  // 匹配 <img> 标签
+  const imgTagRegex = /<img[^>]*src=["']([^"']+)["'][^>]*>/g
+  // 匹配 Markdown 格式图片
+  const markdownImgRegex = /!\[.*?\]\((.*?)\)/g
+
+  // 将本地图片存储为集合
+  let image
+  while (
+    (image = imgTagRegex.exec(articleDetailForm.value.articleContent)) !== null ||
+    (image = markdownImgRegex.exec(articleDetailForm.value.articleContent)) !== null
+  ) {
+    // images.push(image[1])
+    urlsMap.value.set(image[1], '')
+  }
+  // 选择图片上传
+  await filesSelect()
+}
+
+// 文件选择
+const filesSelect = (): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    try {
+      // 创建一个隐藏的文件选择器
+      const input = document.createElement('input')
+      input.type = 'file'
+      input.multiple = true // 允许多文件选择
+      input.accept = '.jpg,.png' // 限制文件格式
+
+      // 设置文件选择器的事件监听
+      input.addEventListener('change', (event: Event) => {
+        const target = event.target as HTMLInputElement
+        if (target.files) {
+          const files = Array.from(target.files)
+          // 检查是否选择了目标目录下的文件（仅作展示，无法限制目录）
+          files.forEach(async (file) => {
+            // 建立原文件名与返回新url网址的映射
+            console.log(`文件名: ${file.name}`)
+            const formData = new FormData()
+            formData.append('file', file)
+            const url: string = await uploadArticleImage(formData)
+            urlsMap.value.forEach((value, key) => {
+              console.log(`key: ${key}, val: ${value}`)
+              console.log('key是否包含文件名: ', key.includes(file.name))
+              if (key.includes(file.name)) {
+                console.log(`待替换原地址: ${key}, 新url地址: ${url}`)
+                articleDetailForm.value.articleContent =
+                  articleDetailForm.value.articleContent.replace(key, url)
+                console.log('新的文章内容: ', articleDetailForm.value.articleContent)
+              }
+            })
+          })
+        } else {
+          console.log('文件上传失败')
+          resolve()
+        }
+        resolve()
+      })
+      // 手动触发文件选择器
+      input.click()
+    } catch (error) {
+      reject(error)
+    }
+  })
 }
 
 // 控制抽屉显示隐藏
@@ -80,6 +148,7 @@ defineExpose({
           name="articleTitle"
           placeholder="请输入文章标题" />
         <div class="flex-grow"></div>
+        <el-button type="success" @click="uploadImagesManually">手动上传图片</el-button>
         <el-button type="success" @click="saveDraft">保存草稿</el-button>
         <el-button type="primary" @click="saveOrUpdate">发布文章</el-button>
         <el-button type="info" @click="(isVisible = false)">取消</el-button>
