@@ -16,16 +16,63 @@ defineProps({
   }
 })
 const emit = defineEmits(['on-query', 'on-reset'])
-const params = ref<ConditionDTO>({} as ConditionDTO)
+const params = ref<ConditionDTO>({ current: 1, size: 10 } as ConditionDTO)
+const status = ref<number>(-1)
+
+// 文章状态变化
+const handleStatusChange = (val: number) => {
+  // 清空 params.value 的所有属性
+  params.value = {} as ConditionDTO
+  switch (val) {
+    // 全部
+    case -1:
+      params.value = { current: 1, size: 10 } as ConditionDTO
+      break
+    // 回收站
+    case 0:
+      params.value = { isDelete: 1, current: 1, size: 10 } as ConditionDTO
+      break
+    // 公开
+    case 1:
+      params.value = { isDelete: 0, status: 1, current: 1, size: 10 } as ConditionDTO
+      break
+    // 私密
+    case 2:
+      params.value = { isDelete: 0, status: 2, current: 1, size: 10 } as ConditionDTO
+      break
+    // 草稿箱
+    case 3:
+      params.value = { isDelete: 0, status: 3, current: 1, size: 10 } as ConditionDTO
+      break
+  }
+  console.log('选择后的表单: ', params.value)
+  emit('on-query', params.value)
+}
 
 // 重置表单
 const handleReset = () => {
-  params.value = { isDelete: 0, current: 1, size: 10 } as ConditionDTO
+  params.value = { current: 1, size: 10 } as ConditionDTO
+  status.value = -1
+  console.log('重置表单: ', params.value)
   emit('on-reset', params.value)
 }
 </script>
 
 <template>
+  <!-- 状态总览 -->
+  <q-btn-toggle
+    v-model="status"
+    toggle-color="primary"
+    flat
+    :options="[
+      { label: '全部', value: -1 },
+      { label: '公开', value: 1 },
+      { label: '私密', value: 2 },
+      { label: '草稿箱', value: 3 },
+      { label: '回收站', value: 0 }
+    ]"
+    @update:model-value="handleStatusChange" />
+  <!-- 筛选器 -->
   <el-form inline class="queryForm">
     <el-form-item label="标题关键字">
       <el-input
@@ -59,18 +106,6 @@ const handleReset = () => {
         placeholder="Select"
         @change="emit('on-query', params)">
         <el-option v-for="tag in tags" :key="tag.id" :value="tag.id" :label="tag.tagName" />
-      </el-select>
-    </el-form-item>
-    <el-form-item label="状态">
-      <el-select
-        v-model="params.status"
-        style="width: 100px"
-        clearable
-        placeholder="Select"
-        @change="emit('on-query', params)">
-        <el-option label="公开" value="1" />
-        <el-option label="私密" value="2" />
-        <el-option label="草稿" value="3" />
       </el-select>
     </el-form-item>
     <el-form-item label="类型">

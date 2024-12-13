@@ -61,18 +61,18 @@ const filesSelect = (): Promise<void> => {
             formData.append('file', file)
             const url: string = await uploadArticleImage(formData)
             urlsMap.value.forEach((value, key) => {
-              console.log(`key: ${key}, val: ${value}`)
-              console.log('key是否包含文件名: ', key.includes(file.name))
+              // console.log(`key: ${key}, val: ${value}`)
+              // console.log('key是否包含文件名: ', key.includes(file.name))
               if (key.includes(file.name)) {
-                console.log(`待替换原地址: ${key}, 新url地址: ${url}`)
+                // console.log(`待替换原地址: ${key}, 新url地址: ${url}`)
                 articleDetailForm.value.articleContent =
                   articleDetailForm.value.articleContent.replace(key, url)
-                console.log('新的文章内容: ', articleDetailForm.value.articleContent)
+                // console.log('新的文章内容: ', articleDetailForm.value.articleContent)
               }
             })
           })
         } else {
-          console.log('文件上传失败')
+          ElMessage.error('图片文件上传失败')
           resolve()
         }
         resolve()
@@ -111,11 +111,10 @@ const onSubmit = () => {
 
 // editor图片自动上传
 const imageAttach = async (pos: number, $imgFile: File) => {
-  console.log('接收到图片信息: ', pos, $imgFile)
   const formData = new FormData()
   formData.append('file', $imgFile)
   const url: string = await uploadArticleImage(formData)
-  console.log('接收到上传图片url: ', url)
+  // console.log('接收到上传图片url: ', url)
   // url替换
   articleDetailFormRef.value.$img2Url(pos, url)
   ElMessage.success('上传成功')

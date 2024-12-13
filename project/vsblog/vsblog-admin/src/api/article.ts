@@ -1,6 +1,7 @@
 import { ArticleDetailDTO } from '@/types/dto/ArticleDetailDTO'
 import { ArticleTopFeaturedDTO } from '@/types/dto/ArticleTopFeaturedDTO'
 import { ConditionDTO } from '@/types/dto/ConditionDTO'
+import { ArticleDeleteDTO } from '@/types/dto/ArticleDeleteDTO'
 import { ArticleAdminViewVO } from '@/types/vo/ArticleAdminViewVO'
 import { ArticleAdminVO } from '@/types/vo/ArticleAdminVO'
 import { PageResultVO } from '@/types/vo/PageResultVO'
@@ -42,10 +43,24 @@ const saveOrUpdateArticle = async (form: ArticleDetailDTO): Promise<void> => {
   await request.post('/admin/articles', form)
 }
 
+// 批量导出文章
+const exportArticles = async (ids: Array<number>): Promise<Array<string>> => {
+  console.log('待导出文章ids: ', ids)
+  return await request.post('/admin/articles/export', ids)
+}
+
+// 逻辑删除文章
+const deleteArticles = async (form: ArticleDeleteDTO): Promise<void> => {
+  console.log('待删除文章ids & stats', form)
+  await request.post('/admin/articles/delete', form)
+}
+
 export {
   getFilteredArticles,
   getArticleById,
   updateTopFeaturedArticleById,
   uploadArticleImage,
-  saveOrUpdateArticle
+  saveOrUpdateArticle,
+  exportArticles,
+  deleteArticles
 }

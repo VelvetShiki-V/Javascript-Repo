@@ -10,13 +10,20 @@ import { ArticleTopFeaturedDTO } from '@/types/dto/ArticleTopFeaturedDTO'
 import { ConditionDTO } from '@/types/dto/ConditionDTO'
 import { useTagStore } from '@/stores/modules/tag'
 import { useCategoryStore } from '@/stores/modules/category'
-import { saveOrUpdateArticle, updateTopFeaturedArticleById } from '@/api/article'
+import {
+  deleteArticles,
+  exportArticles,
+  saveOrUpdateArticle,
+  updateTopFeaturedArticleById
+} from '@/api/article'
 import { EventType } from '@/enums/DataEvent'
 import { ArticleAdminViewVO } from '@/types/vo/ArticleAdminViewVO'
 import FormDrawer from './components/FormDrawer.vue'
 import { ArticleDetailDTO } from '@/types/dto/ArticleDetailDTO'
 import { UploadFile, UploadInstance } from 'element-plus'
 import { ArticleObject } from '@/types/dto/ArticleObject'
+import axios from 'axios'
+import { ArticleDeleteDTO } from '@/types/dto/ArticleDeleteDTO'
 
 // 响应式数据
 const uploadRef = ref<UploadInstance>()
@@ -26,14 +33,17 @@ const dataLoading = ref<boolean>(true)
 const articleStore = useArticleStore()
 const tagStore = useTagStore()
 const categoryStore = useCategoryStore()
-const filterForm = ref<ConditionDTO>({ isDelete: 0, current: 1, size: 10 } as ConditionDTO) // 部分值初始（存在undefined）
+const multipleSelectionRef = ref<ArticleAdminVO[]>([])
+const articleDeleteForm = ref<ArticleDeleteDTO>({} as ArticleDeleteDTO)
+const initArticleListForm = ref<ConditionDTO>({ current: 1, size: 10 } as ConditionDTO)
+const filterForm = ref<ConditionDTO>({ current: 1, size: 10 } as ConditionDTO)
 
 // 初始化
 const initialize = async () => {
   // 页面加载即获取后台数据
-  await articleStore.getArticlesListAsync(filterForm.value)
-  await tagStore.getAllTagsAsync(filterForm.value)
-  await categoryStore.getAllCategoriesAsync(filterForm.value)
+  await articleStore.getArticlesListAsync(initArticleListForm.value)
+  await tagStore.getAllTagsAsync(initArticleListForm.value)
+  await categoryStore.getAllCategoriesAsync(initArticleListForm.value)
   dataLoading.value = false
 }
 initialize()
@@ -44,18 +54,22 @@ provide('categories', categoryStore.pageCategories.records)
 
 // 筛选函数
 const handleQuery = async (form: ConditionDTO) => {
-  filterForm.value = { ...filterForm.value, ...form }
-  console.log('收到了条件表单: ', filterForm.value)
-  await articleStore.getArticlesListAsync(filterForm.value)
+  filterForm.value = { ...form }
+  await articleStore.getArticlesListAsync(form)
 }
 const handleReset = async (form: ConditionDTO) => {
-  filterForm.value = { ...form }
-  await articleStore.getArticlesListAsync(filterForm.value)
+  await articleStore.getArticlesListAsync(form)
 }
+
 // 分页函数
 const handleChange = async () => {
   console.log('条件表单: ', filterForm.value)
   await articleStore.getArticlesListAsync(filterForm.value)
+}
+
+// 勾选行
+const handleSelectionChange = (val: ArticleAdminVO[]) => {
+  multipleSelectionRef.value = val
 }
 
 // 导入文章
@@ -84,10 +98,51 @@ const handleImport = async (file: UploadFile) => {
 }
 
 // 批量导出
-const handleBatchExport = () => {}
+const handleBatchExport = async () => {
+  if (multipleSelectionRef.value.length !== 0) {
+    const articleIds: number[] = multipleSelectionRef.value.map((article) => article.id)
+    const articleUrls: string[] = await exportArticles(articleIds)
+    console.log('接收到了导出文章urls: ', articleUrls)
+    // 遍历urls并器下载到默认目录
+    for (const url of articleUrls) {
+      axios
+        .get(url, { responseType: 'blob' })
+        .then((res) => {
+          // 使用创建的<a>标签进行下载，并通过url获取文章名字
+          const fileName = url.substring(url.lastIndexOf('/') + 1)
+          const link = document.createElement('a')
+          link.href = URL.createObjectURL(res.data)
+          link.download = fileName
+          link.click()
+        })
+        .catch((error) => console.error('下载失败', error))
+    }
+  } else {
+    ElMessage.warning('请选择导出文章!')
+  }
+}
 
 // 批量删除
-const handleBatchDelete = () => {}
+const handleBatchDelete = () => {
+  if (multipleSelectionRef.value.length !== 0) {
+    const articleIds: number[] = multipleSelectionRef.value.map((article) => article.id)
+    ElMessageBox.confirm(`确认删除文章${articleIds}?`, '警告', {
+      confirmButtonText: ' 确 认 ',
+      cancelButtonText: ' 取 消 ',
+      type: 'warning'
+    })
+      .then(async () => {
+        articleDeleteForm.value.ids = articleIds
+        articleDeleteForm.value.isDelete = 1
+        await deleteArticles(articleDeleteForm.value)
+        // 刷新列表
+        await articleStore.getArticlesListAsync(filterForm.value)
+      })
+      .catch(() => {})
+  } else {
+    ElMessage.warning('请选择文章进行删除!')
+  }
+}
 
 // 新增文章
 const handleCreate = () => {
@@ -113,8 +168,21 @@ const handleSubmit = async (article: ArticleDetailDTO) => {
 }
 provide('handleSubmit', handleSubmit)
 
+// 删除文章
 const handleDelete = (row: ArticleAdminVO) => {
-  console.log(row)
+  ElMessageBox.confirm(`确认删除文章《${row.articleTitle}》?`, '警告', {
+    confirmButtonText: ' 确 认 ',
+    cancelButtonText: ' 取 消 ',
+    type: 'warning'
+  })
+    .then(async () => {
+      articleDeleteForm.value.ids = Array.of(row.id)
+      articleDeleteForm.value.isDelete = 1
+      await deleteArticles(articleDeleteForm.value)
+      // 刷新列表
+      await articleStore.getArticlesListAsync(filterForm.value)
+    })
+    .catch(() => {})
 }
 
 // 推荐或置顶开关
@@ -168,8 +236,10 @@ const handleTopFeaturedChanged = async (row: ArticleAdminVO, type: number) => {
       style="width: 100%"
       height="500"
       :border="true"
-      element-loading-text="Loading...">
+      element-loading-text="Loading..."
+      @selection-change="handleSelectionChange">
       <!-- 索引-->
+      <el-table-column type="selection" width="50" align="center" />
       <el-table-column type="index" width="50" align="center" label="No." />
       <el-table-column label="封面" width="300" align="center">
         <template #default="{ row }">
@@ -244,7 +314,10 @@ const handleTopFeaturedChanged = async (row: ArticleAdminVO, type: number) => {
           <el-tooltip content="编辑文章" placement="top">
             <el-button circle :icon="Edit" type="warning" plain @click="handleEdit(scope.row)" />
           </el-tooltip>
-          <el-tooltip content="删除文章" placement="top">
+          <el-tooltip v-if="scope.row.isDelete === 0" content="删除文章" placement="top">
+            <el-button circle :icon="Delete" type="danger" plain @click="handleDelete(scope.row)" />
+          </el-tooltip>
+          <el-tooltip v-else content="恢复文章" placement="top">
             <el-button circle :icon="Delete" type="danger" plain @click="handleDelete(scope.row)" />
           </el-tooltip>
         </template>
@@ -270,6 +343,9 @@ const handleTopFeaturedChanged = async (row: ArticleAdminVO, type: number) => {
 </template>
 
 <style scoped>
+.statusBar {
+  height: 50px;
+}
 .el-pagination {
   margin-top: 20px;
   height: 30px;
